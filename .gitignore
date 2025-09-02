@@ -1,0 +1,42 @@
+# Node.js (backend)
+backend/node_modules/
+backend/.env
+backend/dist/
+backend/build/
+backend/.DS_Store
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/.vscode/
+backend/.idea/
+backend/.cache/
+backend/.next/
+backend/.turbo/
+backend/.eslintcache
+
+# React + Vite (frontend)
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+frontend/.DS_Store
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.vscode/
+frontend/.idea/
+frontend/.cache/
+frontend/.eslintcache
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
