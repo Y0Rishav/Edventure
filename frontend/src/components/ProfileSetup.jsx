@@ -2,24 +2,35 @@ import { useState } from 'react';
 import axios from 'axios';
 
 function ProfileSetup({ user, onComplete }) {
+  const availableSubjects = ['Mathematics', 'Physics', 'Chemistry', 'Biology'];
   const [form, setForm] = useState({
     username: user.username || '',
     age: user.age || '',
     class: user.class || '',
-    subjects: user.subjects ? user.subjects.join(', ') : ''
+    subjects: user.subjects || []
   });
+
+  const handleSubjectChange = (subject, checked) => {
+    setForm(prev => ({
+      ...prev,
+      subjects: checked
+        ? [...prev.subjects, subject]
+        : prev.subjects.filter(s => s !== subject)
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       ...form,
-      subjects: form.subjects.split(',').map(s => s.trim()).filter(s => s)
+      subjects: form.subjects
     };
     try {
       await axios.post('http://localhost:5000/auth/update_profile', data, { withCredentials: true });
       onComplete();
     } catch (err) {
-      alert('Error updating profile');
+      console.log('Error updating profile:', err.response ? err.response.data : err.message);
+      alert('Error updating profile: ' + (err.response ? err.response.data : err.message));
     }
   };
 
@@ -53,14 +64,20 @@ function ProfileSetup({ user, onComplete }) {
           max="12"
           required
         />
-        <input
-          type="text"
-          placeholder="Subjects (comma separated)"
-          value={form.subjects}
-          onChange={e => setForm({...form, subjects: e.target.value})}
-          className="block w-full mb-4 p-2 border rounded"
-          required
-        />
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">Subjects</label>
+          {availableSubjects.map(subject => (
+            <label key={subject} className="flex items-center mb-2">
+              <input
+                type="checkbox"
+                checked={form.subjects.includes(subject)}
+                onChange={e => handleSubjectChange(subject, e.target.checked)}
+                className="mr-2"
+              />
+              {subject}
+            </label>
+          ))}
+        </div>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">Submit</button>
       </form>
     </div>

@@ -58,4 +58,52 @@ router.get('/current_user', (req, res) => {
   res.send(req.user);
 });
 
+router.post('/update_profile', async (req, res) => {
+  if (!req.user) return res.status(401).send('Unauthorized');
+  const { username, age, class: cls, subjects } = req.body;
+  console.log('Updating profile for user:', req.user._id, 'data:', { username, age, cls, subjects });
+  try {
+    await User.findByIdAndUpdate(req.user._id, { username, age, class: cls, subjects });
+    res.send('Profile updated');
+  } catch (err) {
+    console.log('Error updating profile:', err.message);
+    res.status(400).send(err.message);
+  }
+});
+
+router.post('/add_note', async (req, res) => {
+  if (!req.user) return res.status(401).send('Unauthorized');
+  const { videoId, timestamp, content } = req.body;
+  try {
+    const user = await User.findById(req.user._id);
+    user.notes.push({ videoId, timestamp: timestamp || Date.now(), content });
+    await user.save();
+    res.send('Note added');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/update_points', async (req, res) => {
+  if (!req.user) return res.status(401).send('Unauthorized');
+  const { points, badge } = req.body;
+  try {
+    const update = { $inc: { points } };
+    if (badge) update.$addToSet = { badges: badge };
+    await User.findByIdAndUpdate(req.user._id, update);
+    res.send('Updated');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/leaderboard', async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ points: -1 }).limit(10).select('name username points badges');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

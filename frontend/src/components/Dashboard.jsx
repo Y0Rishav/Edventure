@@ -42,7 +42,10 @@ function Dashboard() {
     <div className="min-h-screen bg-gray-100 p-4">
       <header className="bg-blue-600 text-white p-4 mb-4 flex justify-between items-center">
         <h1 className="text-2xl">Dashboard</h1>
-        <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+        <div>
+          <Link to="/leaderboard" className="text-white underline mr-4">Leaderboard</Link>
+          <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+        </div>
       </header>
       <div className="max-w-4xl mx-auto">
         <div className="bg-white p-4 rounded shadow mb-4">

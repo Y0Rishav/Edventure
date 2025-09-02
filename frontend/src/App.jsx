@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import ChapterViewer from './components/ChapterViewer';
+import Leaderboard from './components/Leaderboard';
 import './App.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/course/:id" element={<CourseDetail />} />
         <Route path="/chapter/:id" element={<ChapterViewer />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </Router>
   );

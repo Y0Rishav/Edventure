@@ -8,6 +8,8 @@ function ChapterViewer() {
   const [quizMode, setQuizMode] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [score, setScore] = useState(null);
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState('');
   const { id } = useParams();
 
   useEffect(() => {
@@ -20,6 +22,11 @@ function ChapterViewer() {
         if (chapterRes.data.quiz && chapterRes.data.quiz.questions) {
           setAnswers(new Array(chapterRes.data.quiz.questions.length).fill(null));
         }
+        // Filter notes for this video
+        if (userRes.data && userRes.data.notes) {
+          const videoNotes = userRes.data.notes.filter(note => note.videoId === chapterRes.data.videoId);
+          setNotes(videoNotes);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -31,6 +38,24 @@ function ChapterViewer() {
     try {
       const res = await axios.post(`http://localhost:5000/api/chapters/${id}/quiz`, { answers }, { withCredentials: true });
       setScore(res.data);
+      // Update points
+      const points = res.data.score * 10;
+      const badge = res.data.score === res.data.total ? 'Quiz Master' : null;
+      await axios.post('http://localhost:5000/auth/update_points', { points, badge }, { withCredentials: true });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleAddNote = async () => {
+    if (!newNote.trim()) return;
+    try {
+      await axios.post('http://localhost:5000/auth/add_note', {
+        videoId: chapter.videoId,
+        content: newNote
+      }, { withCredentials: true });
+      setNotes([...notes, { videoId: chapter.videoId, timestamp: Date.now(), content: newNote }]);
+      setNewNote('');
     } catch (err) {
       console.log(err);
     }
@@ -91,6 +116,27 @@ function ChapterViewer() {
             <button onClick={handleQuizSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">Submit Quiz</button>
           </div>
         )}
+        <div className="mt-8">
+          <h3 className="text-xl mb-4">My Notes</h3>
+          <div className="mb-4">
+            <textarea
+              value={newNote}
+              onChange={e => setNewNote(e.target.value)}
+              placeholder="Add a note..."
+              className="w-full p-2 border rounded"
+              rows="3"
+            />
+            <button onClick={handleAddNote} className="mt-2 bg-green-500 text-white px-4 py-2 rounded">Add Note</button>
+          </div>
+          <div className="space-y-2">
+            {notes.map((note, index) => (
+              <div key={index} className="bg-gray-100 p-3 rounded">
+                <p>{note.content}</p>
+                <small className="text-gray-500">{new Date(note.timestamp).toLocaleString()}</small>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
