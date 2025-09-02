@@ -7,12 +7,17 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
+const courseRoutes = require('./routes/courses');
+const chapterRoutes = require('./routes/chapters');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 app.use(session({
   secret: process.env.JWT_SECRET,
@@ -29,6 +34,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/chapters', chapterRoutes);
 app.get('/', (req, res) => {
   res.send('Gamified Learning Platform API');
 });
