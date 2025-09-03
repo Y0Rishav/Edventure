@@ -12,3 +12,14 @@
 
 - `frontend/`: React application
 - `backend/`: Node.js server
+
+
+## API Endpoints
+1. Get videos for specific criteria
+GET /api/videos?class=1&subject=Mathematics&chapter=Numbers 1-10
+
+2. Get filter options
+GET /api/videos/filters/options
+
+3. Get specific video
+GET /api/videos/math_class1_numbers

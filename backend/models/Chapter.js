@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const chapterSchema = new mongoose.Schema({
   title: String,
   course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
-  videoId: String, // YouTube video ID
   description: String,
   order: Number,
   quiz: {

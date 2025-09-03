@@ -69,13 +69,29 @@ function Dashboard() {
         </div>
         <div className="mt-8">
           <h3 className="text-xl mb-4">Your Subjects</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {user.subjects && user.subjects.map(subject => (
-              <div key={subject} className="bg-white p-4 rounded shadow">
-                <h4 className="text-lg mb-2">{subject}</h4>
-                <Link to={`/courses?subject=${encodeURIComponent(subject)}`} className="bg-blue-500 text-white px-4 py-2 rounded">View Courses</Link>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {user.subjects && user.subjects.map(subject => {
+              const subjectProgress = user.progress ? user.progress.filter(p => p.subject === subject) : [];
+              const completedCount = subjectProgress.filter(p => p.completed).length;
+              const totalCount = subjectProgress.length;
+              const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+              
+              return (
+                <div key={subject} className="bg-white p-4 rounded shadow">
+                  <h4 className="text-lg mb-2">{subject}</h4>
+                  <div className="mb-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-blue-600 h-2.5 rounded-full" 
+                        style={{ width: `${progressPercent}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">{completedCount} / {totalCount} chapters completed</p>
+                  </div>
+                  <Link to={`/courses?subject=${encodeURIComponent(subject)}`} className="bg-blue-500 text-white px-4 py-2 rounded">View Courses</Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

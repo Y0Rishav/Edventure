@@ -9,6 +9,7 @@ const passport = require('passport');
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
 const chapterRoutes = require('./routes/chapters');
+const videoRoutes = require('./routes/videos');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/chapters', chapterRoutes);
+app.use('/api', videoRoutes);
 app.get('/', (req, res) => {
   res.send('Gamified Learning Platform API');
 });

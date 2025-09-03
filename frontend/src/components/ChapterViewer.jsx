@@ -4,7 +4,9 @@ import axios from 'axios';
 
 function ChapterViewer() {
   const [chapter, setChapter] = useState(null);
+  const [course, setCourse] = useState(null);
   const [user, setUser] = useState(null);
+  const [video, setVideo] = useState(null);
   const [quizMode, setQuizMode] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [score, setScore] = useState(null);
@@ -22,10 +24,20 @@ function ChapterViewer() {
         if (chapterRes.data.quiz && chapterRes.data.quiz.questions) {
           setAnswers(new Array(chapterRes.data.quiz.questions.length).fill(null));
         }
-        // Filter notes for this video
+        // Fetch course to get subject and class
+        const courseRes = await axios.get(`http://localhost:5000/api/courses/${chapterRes.data.course}`);
+        setCourse(courseRes.data);
+
+        // Fetch appropriate video based on class, subject, and chapter
+        const videoRes = await axios.get(`http://localhost:5000/api/videos?class=${courseRes.data.class}&subject=${courseRes.data.subject}&chapter=${encodeURIComponent(chapterRes.data.title)}`);
+        if (videoRes.data.length > 0) {
+          setVideo(videoRes.data[0]); // Use the first matching video
+        }
+
+        // Filter notes for this chapter/video
         if (userRes.data && userRes.data.notes) {
-          const videoNotes = userRes.data.notes.filter(note => note.videoId === chapterRes.data.videoId);
-          setNotes(videoNotes);
+          const chapterNotes = userRes.data.notes.filter(note => note.chapterId === id);
+          setNotes(chapterNotes);
         }
       } catch (err) {
         console.log(err);
@@ -42,6 +54,12 @@ function ChapterViewer() {
       const points = res.data.score * 10;
       const badge = res.data.score === res.data.total ? 'Quiz Master' : null;
       await axios.post('http://localhost:5000/auth/update_points', { points, badge }, { withCredentials: true });
+      // Update progress
+      await axios.post('http://localhost:5000/auth/update_progress', {
+        subject: course.subject,
+        chapter: chapter.title,
+        completed: true
+      }, { withCredentials: true });
     } catch (err) {
       console.log(err);
     }
@@ -51,17 +69,17 @@ function ChapterViewer() {
     if (!newNote.trim()) return;
     try {
       await axios.post('http://localhost:5000/auth/add_note', {
-        videoId: chapter.videoId,
+        chapterId: id,
         content: newNote
       }, { withCredentials: true });
-      setNotes([...notes, { videoId: chapter.videoId, timestamp: Date.now(), content: newNote }]);
+      setNotes([...notes, { chapterId: id, timestamp: Date.now(), content: newNote }]);
       setNewNote('');
     } catch (err) {
       console.log(err);
     }
   };
 
-  if (!chapter || !user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!chapter || !user || !course) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -73,15 +91,33 @@ function ChapterViewer() {
         <p className="mb-4">{chapter.description}</p>
         {!quizMode ? (
           <div className="mb-4">
-            <iframe
-              width="100%"
-              height="400"
-              src={`https://www.youtube.com/embed/${chapter.videoId}`}
-              title={chapter.title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            {video ? (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">{video.title}</h3>
+                <p className="text-sm text-gray-600 mb-2">{video.description}</p>
+                <div className="mb-2">
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded mr-2">
+                    Difficulty: {video.difficulty_level}
+                  </span>
+                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                    Duration: {video.duration}
+                  </span>
+                </div>
+                <iframe
+                  width="100%"
+                  height="400"
+                  src={video.youtube_link.replace('watch?v=', 'embed/')}
+                  title={video.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            ) : (
+              <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+                <p>Video not available for this chapter yet.</p>
+              </div>
+            )}
             <button onClick={() => setQuizMode(true)} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Take Quiz</button>
           </div>
         ) : score !== null ? (
