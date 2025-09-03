@@ -5,6 +5,11 @@ import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import ChapterViewer from './components/ChapterViewer';
 import Leaderboard from './components/Leaderboard';
+import Battlegrounds from './components/Battlegrounds';
+import BattlegroundsLobby from './components/BattlegroundsLobby';
+import BattlegroundsGame from './components/BattlegroundsGame';
+import BattlegroundsLeaderboard from './components/BattlegroundsLeaderboard';
+import Friends from './components/Friends';
 import './App.css'
 
 function App() {
@@ -17,6 +22,11 @@ function App() {
         <Route path="/course/:id" element={<CourseDetail />} />
         <Route path="/chapter/:id" element={<ChapterViewer />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/battlegrounds" element={<Battlegrounds />} />
+        <Route path="/battlegrounds/lobby" element={<BattlegroundsLobby />} />
+        <Route path="/battlegrounds/game" element={<BattlegroundsGame />} />
+        <Route path="/battlegrounds/leaderboard" element={<BattlegroundsLeaderboard />} />
+        <Route path="/friends" element={<Friends />} />
       </Routes>
     </Router>
   );

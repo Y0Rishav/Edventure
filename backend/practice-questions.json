@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "practice_1",
+      "subject": "Mathematics",
+      "class": 6,
+      "difficulty": "beginner",
+      "question": "What is 15 + 27?",
+      "options": ["42", "43", "41", "40"],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "sample_game_1",
+      "savedAt": "2025-01-04T10:00:00.000Z"
+    },
+    {
+      "id": "practice_2",
+      "subject": "Mathematics",
+      "class": 6,
+      "difficulty": "beginner",
+      "question": "What is the square of 8?",
+      "options": ["64", "56", "72", "48"],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "sample_game_1",
+      "savedAt": "2025-01-04T10:00:00.000Z"
+    },
+    {
+      "id": "practice_3",
+      "subject": "Mathematics",
+      "class": 6,
+      "difficulty": "beginner",
+      "question": "What is 100 divided by 4?",
+      "options": ["25", "20", "30", "35"],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "sample_game_2",
+      "savedAt": "2025-01-04T10:05:00.000Z"
+    }
+  ]
+}

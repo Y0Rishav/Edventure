@@ -43,6 +43,8 @@ function Dashboard() {
       <header className="bg-blue-600 text-white p-4 mb-4 flex justify-between items-center">
         <h1 className="text-2xl">Dashboard</h1>
         <div>
+          <Link to="/battlegrounds" className="text-white underline mr-4">Battlegrounds</Link>
+          <Link to="/friends" className="text-white underline mr-4">Friends</Link>
           <Link to="/leaderboard" className="text-white underline mr-4">Leaderboard</Link>
           <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
         </div>
@@ -92,6 +94,32 @@ function Dashboard() {
                 </div>
               );
             })}
+          </div>
+        </div>
+        <div className="mt-8">
+          <h3 className="text-xl mb-4">Battlegrounds</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-purple-50 p-4 rounded shadow">
+              <h4 className="font-semibold mb-2">Quick Battle</h4>
+              <p className="text-sm mb-3">Jump into a quick match</p>
+              <Link to="/battlegrounds/lobby?mode=practice" className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                Start Battle
+              </Link>
+            </div>
+            <div className="bg-green-50 p-4 rounded shadow">
+              <h4 className="font-semibold mb-2">Competitive</h4>
+              <p className="text-sm mb-3">Challenge other players</p>
+              <Link to="/battlegrounds/lobby?mode=competitive" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Enter Lobby
+              </Link>
+            </div>
+            <div className="bg-blue-50 p-4 rounded shadow">
+              <h4 className="font-semibold mb-2">Leaderboard</h4>
+              <p className="text-sm mb-3">See top players</p>
+              <Link to="/battlegrounds/leaderboard" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                View Rankings
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -1,0 +1,323 @@
+{
+  "questions": [
+    {
+      "id": "math_class1_addition_1",
+      "subject": "Mathematics",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What is 5 + 3?",
+      "options": ["6", "7", "8", "9"],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "math_class1_addition_2",
+      "subject": "Mathematics",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What is 4 + 6?",
+      "options": ["8", "9", "10", "11"],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "math_class1_subtraction_1",
+      "subject": "Mathematics",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What is 10 - 4?",
+      "options": ["4", "5", "6", "7"],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "math_class1_subtraction_2",
+      "subject": "Mathematics",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What is 8 - 3?",
+      "options": ["4", "5", "6", "7"],
+      "correctAnswer": 1,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "math_class4_multiplication_1",
+      "subject": "Mathematics",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What is 6 × 7?",
+      "options": ["36", "42", "48", "54"],
+      "correctAnswer": 1,
+      "points": 15,
+      "timeLimit": 20
+    },
+    {
+      "id": "math_class4_multiplication_2",
+      "subject": "Mathematics",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What is 9 × 8?",
+      "options": ["64", "72", "80", "88"],
+      "correctAnswer": 1,
+      "points": 15,
+      "timeLimit": 20
+    },
+    {
+      "id": "math_class4_fractions_1",
+      "subject": "Mathematics",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What is 1/2 + 1/4?",
+      "options": ["1/4", "1/2", "3/4", "1"],
+      "correctAnswer": 2,
+      "points": 20,
+      "timeLimit": 25
+    },
+    {
+      "id": "math_class6_algebra_1",
+      "subject": "Mathematics",
+      "class": 6,
+      "difficulty": "advanced",
+      "question": "Solve: x + 5 = 12",
+      "options": ["x = 6", "x = 7", "x = 17", "x = 5"],
+      "correctAnswer": 1,
+      "points": 25,
+      "timeLimit": 30
+    },
+    {
+      "id": "math_class6_algebra_2",
+      "subject": "Mathematics",
+      "class": 6,
+      "difficulty": "advanced",
+      "question": "Solve: 2x = 16",
+      "options": ["x = 6", "x = 8", "x = 10", "x = 12"],
+      "correctAnswer": 1,
+      "points": 25,
+      "timeLimit": 30
+    },
+    {
+      "id": "math_class8_linear_1",
+      "subject": "Mathematics",
+      "class": 8,
+      "difficulty": "advanced",
+      "question": "Solve: 2x + 3 = 11",
+      "options": ["x = 3", "x = 4", "x = 5", "x = 6"],
+      "correctAnswer": 1,
+      "points": 30,
+      "timeLimit": 35
+    },
+    {
+      "id": "math_class10_quadratic_1",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "expert",
+      "question": "Solve: x² - 5x + 6 = 0",
+      "options": ["(2,3)", "(1,6)", "(3,2)", "(6,1)"],
+      "correctAnswer": 0,
+      "points": 40,
+      "timeLimit": 45
+    },
+    {
+      "id": "math_class10_trigonometry_1",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "expert",
+      "question": "What is sin(90°)?",
+      "options": ["0", "1/2", "1", "-1"],
+      "correctAnswer": 2,
+      "points": 35,
+      "timeLimit": 40
+    },
+    {
+      "id": "science_class1_animals_1",
+      "subject": "Science",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "Which animal is known as the 'King of the Jungle'?",
+      "options": ["Tiger", "Lion", "Elephant", "Giraffe"],
+      "correctAnswer": 1,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "science_class1_plants_1",
+      "subject": "Science",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What do plants need to make their own food?",
+      "options": ["Water", "Sunlight", "Soil", "All of these"],
+      "correctAnswer": 3,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "science_class4_ecosystem_1",
+      "subject": "Science",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What is the top level of a food chain called?",
+      "options": ["Producer", "Primary consumer", "Secondary consumer", "Apex predator"],
+      "correctAnswer": 3,
+      "points": 15,
+      "timeLimit": 20
+    },
+    {
+      "id": "science_class6_energy_1",
+      "subject": "Science",
+      "class": 6,
+      "difficulty": "advanced",
+      "question": "Which of these is a renewable source of energy?",
+      "options": ["Coal", "Petroleum", "Solar power", "Natural gas"],
+      "correctAnswer": 2,
+      "points": 25,
+      "timeLimit": 30
+    },
+    {
+      "id": "physics_class1_motion_1",
+      "subject": "Physics",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What is motion?",
+      "options": ["Staying still", "Moving from one place to another", "Sleeping", "Eating"],
+      "correctAnswer": 1,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "physics_class4_light_1",
+      "subject": "Physics",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What type of reflection makes us see ourselves in a mirror?",
+      "options": ["Diffuse", "Regular", "Scattered", "Absorbed"],
+      "correctAnswer": 1,
+      "points": 15,
+      "timeLimit": 20
+    },
+    {
+      "id": "physics_class6_electricity_1",
+      "subject": "Physics",
+      "class": 6,
+      "difficulty": "advanced",
+      "question": "What is the SI unit of electric current?",
+      "options": ["Volt", "Watt", "Ampere", "Ohm"],
+      "correctAnswer": 2,
+      "points": 25,
+      "timeLimit": 30
+    },
+    {
+      "id": "physics_class8_pressure_1",
+      "subject": "Physics",
+      "class": 8,
+      "difficulty": "advanced",
+      "question": "What is atmospheric pressure?",
+      "options": ["Pressure in space", "Pressure of air around us", "Pressure in water", "Pressure in soil"],
+      "correctAnswer": 1,
+      "points": 30,
+      "timeLimit": 35
+    },
+    {
+      "id": "chemistry_class1_matter_1",
+      "subject": "Chemistry",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What are the three states of matter?",
+      "options": ["Solid, Liquid, Gas", "Hot, Cold, Warm", "Big, Medium, Small", "Red, Blue, Green"],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "chemistry_class4_matter_1",
+      "subject": "Chemistry",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What is the chemical symbol for water?",
+      "options": ["Wa", "H2O", "Wt", "HO"],
+      "correctAnswer": 1,
+      "points": 15,
+      "timeLimit": 20
+    },
+    {
+      "id": "chemistry_class6_atoms_1",
+      "subject": "Chemistry",
+      "class": 6,
+      "difficulty": "advanced",
+      "question": "What is the center of an atom called?",
+      "options": ["Electron", "Proton", "Neutron", "Nucleus"],
+      "correctAnswer": 3,
+      "points": 25,
+      "timeLimit": 30
+    },
+    {
+      "id": "chemistry_class8_acids_1",
+      "subject": "Chemistry",
+      "class": 8,
+      "difficulty": "advanced",
+      "question": "What is the pH value of pure water?",
+      "options": ["0", "7", "14", "1"],
+      "correctAnswer": 1,
+      "points": 30,
+      "timeLimit": 35
+    },
+    {
+      "id": "biology_class1_cells_1",
+      "subject": "Biology",
+      "class": 1,
+      "difficulty": "beginner",
+      "question": "What is the basic unit of life?",
+      "options": ["Tissue", "Organ", "Cell", "System"],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 15
+    },
+    {
+      "id": "biology_class4_plants_1",
+      "subject": "Biology",
+      "class": 4,
+      "difficulty": "intermediate",
+      "question": "What is photosynthesis?",
+      "options": ["Plant growth", "Making food from sunlight", "Plant reproduction", "Water absorption"],
+      "correctAnswer": 1,
+      "points": 15,
+      "timeLimit": 20
+    },
+    {
+      "id": "biology_class6_microorganisms_1",
+      "subject": "Biology",
+      "class": 6,
+      "difficulty": "advanced",
+      "question": "Which of these is NOT a microorganism?",
+      "options": ["Bacteria", "Virus", "Fungus", "Elephant"],
+      "correctAnswer": 3,
+      "points": 25,
+      "timeLimit": 30
+    },
+    {
+      "id": "biology_class8_respiration_1",
+      "subject": "Biology",
+      "class": 8,
+      "difficulty": "advanced",
+      "question": "Where does cellular respiration occur?",
+      "options": ["Nucleus", "Mitochondria", "Cell membrane", "Cytoplasm"],
+      "correctAnswer": 1,
+      "points": 30,
+      "timeLimit": 35
+    },
+    {
+      "id": "biology_class10_genetics_1",
+      "subject": "Biology",
+      "class": 10,
+      "difficulty": "expert",
+      "question": "Who proposed the theory of natural selection?",
+      "options": ["Darwin", "Mendel", "Pasteur", "Linnaeus"],
+      "correctAnswer": 0,
+      "points": 40,
+      "timeLimit": 45
+    }
+  ]
+}
