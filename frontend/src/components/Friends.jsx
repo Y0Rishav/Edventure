@@ -1,24 +1,31 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Friends() {
   const [friends, setFriends] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    fetchUser();
     fetchFriends();
   }, []);
 
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchFriends = async () => {
     try {
-      // For now, we'll simulate friends data
-      // In a real app, this would come from the backend
-      setFriends([
-        { _id: '1', username: 'student1', name: 'Alex Johnson' },
-        { _id: '2', username: 'mathwiz', name: 'Sarah Chen' },
-        { _id: '3', username: 'sciencefan', name: 'Mike Davis' }
-      ]);
+      const res = await axios.get('http://localhost:5000/api/friends', { withCredentials: true });
+      setFriends(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -29,18 +36,8 @@ function Friends() {
 
     setLoading(true);
     try {
-      // Simulate search results
-      // In a real app, this would search the backend
-      const mockResults = [
-        { _id: '4', username: 'physics_pro', name: 'Emma Wilson' },
-        { _id: '5', username: 'chemistry_master', name: 'David Brown' },
-        { _id: '6', username: 'biology_expert', name: 'Lisa Garcia' }
-      ].filter(user =>
-        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-      setSearchResults(mockResults);
+      const res = await axios.get(`http://localhost:5000/api/friends/search?q=${encodeURIComponent(searchTerm)}`, { withCredentials: true });
+      setSearchResults(res.data);
     } catch (err) {
       console.log(err);
     } finally {
@@ -50,12 +47,11 @@ function Friends() {
 
   const addFriend = async (friendId) => {
     try {
-      // In a real app, this would send a friend request to the backend
-      const friendToAdd = searchResults.find(user => user._id === friendId);
-      if (friendToAdd) {
-        setFriends([...friends, friendToAdd]);
-        setSearchResults(searchResults.filter(user => user._id !== friendId));
-      }
+      await axios.post(`http://localhost:5000/api/friends/add/${friendId}`, {}, { withCredentials: true });
+      // Refresh friends list
+      fetchFriends();
+      // Remove from search results
+      setSearchResults(searchResults.filter(user => user._id !== friendId));
     } catch (err) {
       console.log(err);
     }
@@ -63,7 +59,9 @@ function Friends() {
 
   const removeFriend = async (friendId) => {
     try {
-      setFriends(friends.filter(friend => friend._id !== friendId));
+      await axios.delete(`http://localhost:5000/api/friends/remove/${friendId}`, { withCredentials: true });
+      // Refresh friends list
+      fetchFriends();
     } catch (err) {
       console.log(err);
     }
