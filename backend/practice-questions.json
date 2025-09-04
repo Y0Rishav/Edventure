@@ -6,7 +6,12 @@
       "class": 6,
       "difficulty": "beginner",
       "question": "What is 15 + 27?",
-      "options": ["42", "43", "41", "40"],
+      "options": [
+        "42",
+        "43",
+        "41",
+        "40"
+      ],
       "correctAnswer": 0,
       "points": 10,
       "timeLimit": 30,
@@ -19,7 +24,12 @@
       "class": 6,
       "difficulty": "beginner",
       "question": "What is the square of 8?",
-      "options": ["64", "56", "72", "48"],
+      "options": [
+        "64",
+        "56",
+        "72",
+        "48"
+      ],
       "correctAnswer": 0,
       "points": 10,
       "timeLimit": 30,
@@ -32,12 +42,207 @@
       "class": 6,
       "difficulty": "beginner",
       "question": "What is 100 divided by 4?",
-      "options": ["25", "20", "30", "35"],
+      "options": [
+        "25",
+        "20",
+        "30",
+        "35"
+      ],
       "correctAnswer": 0,
       "points": 10,
       "timeLimit": 30,
       "gameId": "sample_game_2",
       "savedAt": "2025-01-04T10:05:00.000Z"
+    },
+    {
+      "id": "math_10_beginner_1",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The prime factorization of 140 is:",
+      "options": [
+        "2 x 5 x 7",
+        "2² x 5 x 7",
+        "4 x 5 x 7",
+        "2 x 5² x 7"
+      ],
+      "correctAnswer": 1,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756980936398_3o2ke5b0u",
+      "savedAt": "2025-09-04T10:16:50.476Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beginner_2",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The distance between the points (0, 0) and (3, 4) is:",
+      "options": [
+        "5",
+        "7",
+        "25",
+        "1"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756980936398_3o2ke5b0u",
+      "savedAt": "2025-09-04T10:16:50.476Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beginner_3",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "If sin θ = 3/5, then cosec θ is equal to:",
+      "options": [
+        "5/3",
+        "3/5",
+        "4/5",
+        "5/4"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756980936398_3o2ke5b0u",
+      "savedAt": "2025-09-04T10:16:50.476Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beginner_4",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The area of a circle with radius 7 cm is:",
+      "options": [
+        "22 cm²",
+        "44 cm²",
+        "154 cm²",
+        "88 cm²"
+      ],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756980936398_3o2ke5b0u",
+      "savedAt": "2025-09-04T10:16:50.476Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beginner_5",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The sum of the first 10 natural numbers is:",
+      "options": [
+        "100",
+        "55",
+        "45",
+        "65"
+      ],
+      "correctAnswer": 1,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756980936398_3o2ke5b0u",
+      "savedAt": "2025-09-04T10:16:50.476Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beg_1",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The distance between the points (2, 3) and (4, 1) is:",
+      "options": [
+        "√8",
+        "√12",
+        "√20",
+        "√26"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756985792304_zfpd5i3ws",
+      "savedAt": "2025-09-04T11:37:15.359Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beg_2",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "If the discriminant of a quadratic equation is zero, then the roots are:",
+      "options": [
+        "Real and unequal",
+        "Imaginary",
+        "Real and equal",
+        "Irrational"
+      ],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756985792304_zfpd5i3ws",
+      "savedAt": "2025-09-04T11:37:15.359Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beg_3",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The value of sin 30° is:",
+      "options": [
+        "0",
+        "1",
+        "1/2",
+        "√3/2"
+      ],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756985792304_zfpd5i3ws",
+      "savedAt": "2025-09-04T11:37:15.359Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beg_4",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The area of a circle with radius 'r' is:",
+      "options": [
+        "2πr",
+        "πr",
+        "πr²",
+        "πd"
+      ],
+      "correctAnswer": 2,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756985792304_zfpd5i3ws",
+      "savedAt": "2025-09-04T11:37:15.359Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "math_10_beg_5",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The Highest Common Factor (HCF) of 12 and 18 is:",
+      "options": [
+        "6",
+        "12",
+        "18",
+        "36"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1756985792304_zfpd5i3ws",
+      "savedAt": "2025-09-04T11:37:15.359Z",
+      "classLevel": "10"
     }
   ]
 }

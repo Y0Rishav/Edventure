@@ -10,7 +10,7 @@ import BattlegroundsLobby from './components/BattlegroundsLobby';
 import BattlegroundsGame from './components/BattlegroundsGame';
 import BattlegroundsLeaderboard from './components/BattlegroundsLeaderboard';
 import Friends from './components/Friends';
-import './App.css'
+// import './App.css' // Commented out to prevent conflicts with Tailwind
 
 function App() {
   return (
