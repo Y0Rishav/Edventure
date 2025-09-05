@@ -3,6 +3,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Course = require('./models/Course');
 const Chapter = require('./models/Chapter');
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
 
 mongoose.connect(process.env.MONGO_URI);
 
@@ -415,6 +417,20 @@ const seedData = async () => {
 
   physicsCourse4.chapters = [physicsChapter4_1._id];
   await physicsCourse4.save();
+
+  // Create sample user
+  const hashedPassword = await bcrypt.hash('password123', 10);
+  const sampleUser = new User({
+    name: 'Test User',
+    username: 'Testuser',
+    email: 'testuser@example.com',
+    password: hashedPassword,
+    age: 16,
+    class: 10,
+    subjects: ['Mathematics', 'Science', 'Physics'],
+    points: 100
+  });
+  await sampleUser.save();
 
   console.log('Sample data seeded successfully!');
   process.exit();

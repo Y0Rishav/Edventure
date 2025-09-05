@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
@@ -119,6 +120,49 @@ router.post('/update_progress', async (req, res) => {
     }
     await user.save();
     res.send('Progress updated');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/register', async (req, res) => {
+  const { name, username, email, password, age, class: cls, subjects } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({
+      name,
+      username,
+      email,
+      password: hashedPassword,
+      age,
+      class: cls,
+      subjects
+    });
+    await user.save();
+    req.login(user, (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: 'User registered successfully', user });
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !user.password) {
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
+    req.login(user, (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: 'Login successful', user });
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

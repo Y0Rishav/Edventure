@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   username: { type: String, unique: true },
   email: String,
+  password: String, // Added for traditional login
   age: Number,
   class: Number, // 1-12
   subjects: [String],

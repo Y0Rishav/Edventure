@@ -10,6 +10,7 @@ import BattlegroundsLobby from './components/BattlegroundsLobby';
 import BattlegroundsGame from './components/BattlegroundsGame';
 import BattlegroundsLeaderboard from './components/BattlegroundsLeaderboard';
 import Friends from './components/Friends';
+import ForgotPassword from './components/ForgotPassword';
 // import './App.css' // Commented out to prevent conflicts with Tailwind
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/course/:id" element={<CourseDetail />} />
