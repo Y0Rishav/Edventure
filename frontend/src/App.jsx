@@ -11,6 +11,7 @@ import BattlegroundsGame from './components/BattlegroundsGame';
 import BattlegroundsLeaderboard from './components/BattlegroundsLeaderboard';
 import Friends from './components/Friends';
 import ForgotPassword from './components/ForgotPassword';
+import Chatbot from './components/Chatbot';
 // import './App.css' // Commented out to prevent conflicts with Tailwind
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/battlegrounds/leaderboard" element={<BattlegroundsLeaderboard />} />
         <Route path="/friends" element={<Friends />} />
       </Routes>
+      <Chatbot />
     </Router>
   );
 }

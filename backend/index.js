@@ -14,6 +14,7 @@ const chapterRoutes = require('./routes/chapters');
 const videoRoutes = require('./routes/videos');
 const battlegroundsRoutes = require('./routes/battlegrounds');
 const friendsRoutes = require('./routes/friends');
+const chatbotRoutes = require('./routes/chatbot');
 
 const app = express();
 const server = createServer(app);
@@ -52,6 +53,7 @@ app.use('/api/chapters', chapterRoutes);
 app.use('/api', videoRoutes);
 app.use('/api', battlegroundsRoutes);
 app.use('/api/friends', friendsRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 app.get('/', (req, res) => {
   res.send('Gamified Learning Platform API');
 });
