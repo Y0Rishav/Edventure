@@ -116,7 +116,6 @@ function Dashboard() {
     <div className="min-h-screen bg-[#0A1F2B] text-white" style={{ fontFamily: "Inter, sans-serif" }}>
       {/* Use imported Sidebar component instead of inline sidebar */}
       <Sidebar onLogout={handleLogout} />
-
       {/* Main Content */}
       <div className="ml-64 p-8">
         {/* Header */}
@@ -155,7 +154,7 @@ function Dashboard() {
             <div className="bg-[#1E3A47] rounded-2xl p-6 border border-[#2A4A57]">
               <h4 className="text-white font-semibold mb-2">Points Earned</h4>
               <div className="text-4xl font-bold text-white flex items-center gap-2">
-                {user.points || 4700}
+                {user.points || 0}
                 <span className="text-2xl">🎯</span>
               </div>
             </div>

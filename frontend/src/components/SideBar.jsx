@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+
 // Icon Components
 const BookIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +57,8 @@ const LogoutIcon = () => (
   </svg>
 );
 
-function Sidebar({ onLogout }) {
+function Sidebar({onLogout}) {
+    
   return (
     <div className="fixed left-0 top-0 h-full w-64 bg-[#7FB3C1] p-6">
       <div className="mb-8">
