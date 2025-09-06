@@ -94,14 +94,14 @@ function Friends() {
             <h1 className="text-3xl font-bold text-[#002732] mb-2">Your Squad</h1>
             <p className="text-[#002732] text-sm">Connect and compete with your friends • {friends.length} members</p>
           </div>
-          <div className="bg-[#144F5F] rounded-xl p-4">
+          <div className="bg-[#0A1F2B] rounded-xl p-4">
             <div className="text-white text-2xl font-bold">{friends.length}</div>
             <div className="text-[#9AE9FD] text-xs">Squad Size</div>
           </div>
         </div>
 
         {/* Search Section */}
-        <div className="bg-[#1E3A47] rounded-2xl p-6 mb-8 border border-[#2A4A57]">
+        <div className="bg-[#0A1F2B] rounded-2xl p-6 mb-8 border border-[#2A4A57]">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-[#9AE9FD]/20 rounded-xl flex items-center justify-center">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -165,7 +165,7 @@ function Friends() {
               </h3>
               <div className="space-y-3">
                 {searchResults.map(user => (
-                  <div key={user._id} className="bg-[#7FB3C1] rounded-xl p-5 hover:bg-[#B8C5C9] transition-all duration-300 shadow-md hover:shadow-lg">
+                  <div key={user._id} className="bg-[#0A1F2B] rounded-xl p-5 hover:bg-[#B8C5C9] transition-all duration-300 shadow-md hover:shadow-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className="relative">
@@ -203,7 +203,7 @@ function Friends() {
         </div>
 
         {/* Friends List */}
-        <div className="bg-[#1E3A47] rounded-2xl p-6 border border-[#2A4A57]">
+        <div className="bg-[#0A1F2B] rounded-2xl p-6 border border-[#2A4A57]">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">

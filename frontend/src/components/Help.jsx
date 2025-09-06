@@ -36,6 +36,14 @@ const Help = () => {
   const toggleFAQ = (index) => {
     setExpandedFAQ(expandedFAQ === index ? null : index);
   };
+    const handleLogout = async () => {
+      try {
+        await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+        window.location.href = '/';
+      } catch (err) {
+        console.error('Logout failed', err);
+      }
+    };
 
   const helpCategories = [
     {
@@ -81,10 +89,8 @@ const Help = () => {
 
   return (
     <div className="flex min-h-screen">
-      <SideBar />
-  <main className="flex-1 min-h-screen w-full ml-64" style={{
-        background: 'linear-gradient(180deg, #051418 0%, #103E4C 100%)'
-      }}>
+      <SideBar onLogout={handleLogout}/>
+  <main className="flex-1 min-h-screen w-full ml-64 bg-[#0A1F2B]" >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center pt-16 sm:pt-20 lg:pt-24 pb-8">
             

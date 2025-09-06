@@ -4,7 +4,14 @@ import './details.css'; // Using the modern, gamified CSS you approved
 
 const Details = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+    const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      window.location.href = '/';
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
+  };
   useEffect(() => {
     // Trigger the animation shortly after the component mounts
     const timer = setTimeout(() => setIsScrolled(true), 100);
@@ -13,8 +20,8 @@ const Details = () => {
 
   return (
     <div className="flex min-h-screen">
-      <SideBar />
-  <main className="flex-1 min-h-screen w-full ml-64 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8" style={{ background: 'linear-gradient(180deg, #051418 0%, #103E4C 100%)' }}>
+      <SideBar onLogout={handleLogout}/>
+  <main className="flex-1 min-h-screen w-full ml-64 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 " style={{ background: 'linear-gradient(180deg, #051418 0%, #103E4C 100%)' }}>
         
         {/* The Scroll Container */}
         <div className={`scroll-container ${isScrolled ? 'unrolled' : ''}`}>

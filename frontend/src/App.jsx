@@ -16,6 +16,7 @@ import Home from './components/Home';
 import Contact from './components/Contact';
 import Help from './components/Help';
 import Details from './components/Details';
+import Profile from './components/Profile';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/help" element={<Help />} />
 
         <Route path="/details"element={<Details />} />
+        <Route path="/profile"element={<Profile />} />
       </Routes>
       <Chatbot />
     </Router>
