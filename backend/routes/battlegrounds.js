@@ -17,11 +17,23 @@ async function generateQuestions(subject, difficulty, classLevel) {
       throw new Error('GEMINI_API_KEY not configured properly. Please set your Gemini API key in the .env file.');
     }
 
+    // Check cache first
+    const cacheKey = `${subject}-${difficulty}-${classLevel}`.toLowerCase();
+    if (generatedQuestions.has(cacheKey)) {
+      console.log(`📋 Using cached questions for ${cacheKey}`);
+      return generatedQuestions.get(cacheKey);
+    }
+
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
+    // Create a deterministic seed based on subject, difficulty, and class
+    const seed = `${subject}-${difficulty}-${classLevel}`.toLowerCase();
+    
     const prompt = `Generate 5 multiple choice questions for ${subject} at ${difficulty} difficulty level for class ${classLevel} students. 
 
-Return the response in this exact JSON format:gemini-pro
+Use this seed for consistency: "${seed}"
+
+Return the response in this exact JSON format:
 {
   "questions": [
     {
@@ -44,7 +56,8 @@ Requirements:
 - correctAnswer should be the index (0-3) of the correct option
 - Make questions educational and appropriate for the class level
 - Ensure questions are challenging but solvable
-- Use proper JSON formatting`;
+- Use proper JSON formatting
+- Use the seed "${seed}" to ensure consistent generation`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -59,7 +72,13 @@ Requirements:
     }
 
     const questionsData = JSON.parse(jsonText);
-    return questionsData.questions;
+    const questions = questionsData.questions;
+    
+    // Cache the questions
+    generatedQuestions.set(cacheKey, questions);
+    console.log(`💾 Cached questions for ${cacheKey}`);
+    
+    return questions;
   } catch (error) {
     console.error('Error generating questions with Gemini:', error);
     throw error;
@@ -234,3 +253,4 @@ setInterval(() => {
 }, 10 * 60 * 1000); // Check every 10 minutes
 
 module.exports = router;
+module.exports.generateQuestions = generateQuestions;

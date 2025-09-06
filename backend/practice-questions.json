@@ -243,6 +243,101 @@
       "gameId": "game_1756985792304_zfpd5i3ws",
       "savedAt": "2025-09-04T11:37:15.359Z",
       "classLevel": "10"
+    },
+    {
+      "id": "q1",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "What is the value of sin(0°)?",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "1/2"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1757089572533_alu0ccfrc",
+      "savedAt": "2025-09-05T16:27:22.375Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "q2",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "What is the distance of the point (3, 4) from the origin?",
+      "options": [
+        "5",
+        "7",
+        "1",
+        "25"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1757089572533_alu0ccfrc",
+      "savedAt": "2025-09-05T16:27:22.375Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "q3",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "If the radius of a circle is 7 cm, then what is its circumference?",
+      "options": [
+        "44 cm",
+        "22 cm",
+        "154 cm",
+        "88 cm"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1757089572533_alu0ccfrc",
+      "savedAt": "2025-09-05T16:27:22.375Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "q4",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "What is the degree of the polynomial x² + 2x + 1?",
+      "options": [
+        "2",
+        "1",
+        "0",
+        "3"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1757089572533_alu0ccfrc",
+      "savedAt": "2025-09-05T16:27:22.375Z",
+      "classLevel": "10"
+    },
+    {
+      "id": "q5",
+      "subject": "Mathematics",
+      "class": 10,
+      "difficulty": "beginner",
+      "question": "The probability of an event always lies between:",
+      "options": [
+        "0 and 1",
+        "-1 and 1",
+        "0 and infinity",
+        "-infinity and infinity"
+      ],
+      "correctAnswer": 0,
+      "points": 10,
+      "timeLimit": 30,
+      "gameId": "game_1757089572533_alu0ccfrc",
+      "savedAt": "2025-09-05T16:27:22.375Z",
+      "classLevel": "10"
     }
   ]
 }

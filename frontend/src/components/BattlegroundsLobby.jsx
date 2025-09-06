@@ -24,9 +24,7 @@ function BattlegroundsLobby() {
   const classes = Array.from({length: 12}, (_, i) => i + 1);
   const modes = [
     { value: 'practice', label: 'Practice', description: 'Practice without competing' },
-    { value: 'solo', label: 'Solo', description: 'Compete against AI/time' },
-    { value: 'duo', label: 'Duo', description: 'Team up with a friend' },
-    { value: 'squad', label: 'Squad', description: '4-player team battle' }
+    { value: 'solo', label: 'Solo', description: 'Compete against Real Players' }
   ];
 
   useEffect(() => {
@@ -128,38 +126,31 @@ function BattlegroundsLobby() {
       return;
     }
 
-    // Handle practice mode differently - go directly to game
+    // Practice mode - navigate directly and generate questions server-side without matchmaking
     if (selectedMode === 'practice') {
       console.log('📚 Starting practice mode');
       navigate(`/battlegrounds/game?subject=${selectedSubject}&difficulty=${selectedDifficulty}&class=${selectedClass}&mode=practice&multiplayer=false`);
       return;
     }
 
+    // Solo competitive - require socket connection
     if (!socket || !isConnected) {
       alert('Not connected to server. Please try again.');
       console.log('❌ Socket not connected:', { socket: !!socket, isConnected });
       return;
     }
 
-    console.log('🚀 Starting match with socket connected:', isConnected);
-
-    // Join the lobby
-    socket.emit('join-lobby', {
+    // Emit a concise join message for 1v1 match
+    const payload = {
       userId: user._id,
       username: user.username,
       subject: selectedSubject,
       difficulty: selectedDifficulty,
       classLevel: selectedClass,
-      mode: selectedMode
-    });
-    console.log('🎯 Joining lobby with:', {
-      userId: user._id,
-      username: user.username,
-      subject: selectedSubject,
-      difficulty: selectedDifficulty,
-      classLevel: selectedClass,
-      mode: selectedMode
-    });
+      mode: 'solo'
+    };
+    socket.emit('join-lobby', payload);
+    console.log('🚀 Emitted join-lobby for solo match:', payload);
 
     setIsWaiting(true);
     setWaitingMessage('Finding opponent...');
@@ -253,8 +244,8 @@ function BattlegroundsLobby() {
           </div>
         </div>
 
-        {/* Friends Invitation Section */}
-        {(selectedMode === 'duo' || selectedMode === 'squad') && (
+        {/* Friends Invitation Section - Removed for solo and practice modes */}
+        {/* {(selectedMode === 'duo' || selectedMode === 'squad') && (
           <div className="bg-white p-6 rounded shadow mb-6">
             <h3 className="text-lg mb-4">Invite Friends</h3>
             <div className="mb-4">
@@ -296,7 +287,7 @@ function BattlegroundsLobby() {
               </div>
             )}
           </div>
-        )}
+        )} */}
 
         {/* Start Match Button */}
         <div className="bg-white p-6 rounded shadow">

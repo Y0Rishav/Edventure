@@ -100,12 +100,12 @@ function Battlegrounds() {
                   <span className="text-green-600 text-xl">⚔️</span>
                 </div>
                 <div>
-                  <h3 className="text-slate-800 font-semibold">Competitive Mode</h3>
-                  <p className="text-slate-600 text-sm">Battle against other players</p>
+                  <h3 className="text-slate-800 font-semibold">Solo Competitive</h3>
+                  <p className="text-slate-600 text-sm">Compete against other players</p>
                 </div>
               </div>
               <Link 
-                to="/battlegrounds/lobby?mode=competitive" 
+                to="/battlegrounds/lobby?mode=solo" 
                 className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 <span>Enter Lobby</span>
