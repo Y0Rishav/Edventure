@@ -28,22 +28,13 @@ function BattlegroundsGame() {
   const timerRef = useRef(null);
   const [gameState, setGameState] = useState('loading'); // loading, vs-screen, playing, waiting-opponent, finished
   const [showVsScreen, setShowVsScreen] = useState(false);
-  const [powerUps, setPowerUps] = useState({
-    fiftyFifty: true,
-    extraTime: true,
-    skipQuestion: true
-  });
-  const [usedPowerUps, setUsedPowerUps] = useState({
-    fiftyFifty: false,
-    extraTime: false,
-    skipQuestion: false
-  });
 
   // Multiplayer state
   const [opponent, setOpponent] = useState(null);
   const [opponentScore, setOpponentScore] = useState(0);
   const [roundResults, setRoundResults] = useState(null);
   const [finalResults, setFinalResults] = useState(null);
+
   // Monitor gameState changes
   useEffect(() => {
     console.log('📊 Game state changed to:', gameState);
@@ -96,14 +87,11 @@ function BattlegroundsGame() {
         }
       } catch (err) {
         console.log('❌ Error loading user in game:', err);
-        // Show error message instead of auto-redirect
         alert('Session expired. Please refresh the page and log in again.');
-        // Don't auto-redirect, let user handle it
-        // window.location.href = '/';
       }
     };
     fetchData();
-  }, [subject, difficulty, classLevel, isMultiplayer, gameDataFromState]); // Removed socket from dependencies
+  }, [subject, difficulty, classLevel, isMultiplayer, gameDataFromState]);
 
   // Socket.IO event listeners for multiplayer
   useEffect(() => {
@@ -118,8 +106,7 @@ function BattlegroundsGame() {
       console.log('📝 First question:', data.questions?.[0]?.question);
       
       setOpponent(data.opponent);
-  setOpponent(data.opponent);
-  setGameId(data.gameId);
+      setGameId(data.gameId);
       
       // Set questions from backend
       if (data.questions && data.questions.length > 0) {
@@ -145,17 +132,14 @@ function BattlegroundsGame() {
       console.log('📊 Current score before update:', score);
       console.log('📊 User loaded:', !!user, user?.username);
       
-      // Only process if user is loaded
       if (!user) {
         console.log('⚠️ User not loaded yet, ignoring round-results');
         return;
       }
       
-      // Update local score from server data (server may send `score` or `points`)
       const isPlayer1 = data.player1.username === user.username;
       const extractScore = (p) => {
         if (!p) return 0;
-        // Accept either `score` or `points` (older code used `points`)
         return Number(p.score ?? p.points ?? 0) || 0;
       };
       const newScore = isPlayer1 ? extractScore(data.player1) : extractScore(data.player2);
@@ -164,25 +148,21 @@ function BattlegroundsGame() {
       console.log('📊 Setting score to:', newScore);
       console.log('📊 Setting opponent score to:', newOpponentScore);
       
-  // Force state update to numeric values
-  console.log('📊 Score state update from', score, 'to', newScore);
-  setScore(newScore);
+      console.log('📊 Score state update from', score, 'to', newScore);
+      setScore(newScore);
       setOpponentScore(newOpponentScore);
       
       console.log('📊 Score updated to:', newScore);
       
-      // Check if both players have finished all questions
       if (data.player1.answers && data.player1.answers.length === questions.length &&
           data.player2.answers && data.player2.answers.length === questions.length) {
-        // Both players finished - transition to finished state
         setGameState('finished');
       }
     });
 
-  socket.on('game-final-results', async (data) => {
+    socket.on('game-final-results', async (data) => {
       console.log('🎉 Received final results (raw):', data);
 
-      // Normalize answers for both players into the client's expected shape
       const normalizeAnswers = (answersArray) => {
         if (!Array.isArray(answersArray)) return [];
         return answersArray.map((a, idx) => {
@@ -212,7 +192,6 @@ function BattlegroundsGame() {
         player1: { ...data.player1, answers: p1Answers },
         player2: { ...data.player2, answers: p2Answers },
         answers: {
-          // Key answers by both username and userId for robust lookup
           [data.player1?.username]: p1Answers,
           [data.player2?.username]: p2Answers,
           [data.player1?.userId]: p1Answers,
@@ -223,16 +202,13 @@ function BattlegroundsGame() {
       setFinalResults(normalized);
       setGameState('finished');
 
-      // Update local answers state for this user from the finalized results
       try {
-        // Prefer matching by username first, then by userId
         let myFinalAnswers = [];
         if (normalized.player1 && user) {
           const p1Match = (normalized.player1.username === user.username) || (normalized.player1.userId && (String(normalized.player1.userId) === String(user._id) || String(normalized.player1.userId) === String(user.id)));
           if (p1Match) myFinalAnswers = normalized.player1.answers || [];
           else myFinalAnswers = normalized.player2?.answers || [];
         } else {
-          // Fallback to answers map
           const myKey = user?._id ?? user?.id ?? user?.username;
           myFinalAnswers = normalized.answers?.[myKey] ?? normalized.answers?.[user?.username] ?? [];
         }
@@ -240,7 +216,6 @@ function BattlegroundsGame() {
         console.log('🧭 Debug: resolved myFinalAnswers length:', myFinalAnswers?.length, 'for user:', user?.username, 'normalized keys:', Object.keys(normalized.answers || {}));
 
         if (Array.isArray(myFinalAnswers) && myFinalAnswers.length > 0) {
-          // Map to local answer shape
           const updatedLocalAnswers = myFinalAnswers.map((a, idx) => ({
             questionId: a.questionId ?? a.id ?? null,
             selectedAnswer: typeof a.selectedAnswer === 'number' ? a.selectedAnswer : (typeof a.answerIndex === 'number' ? a.answerIndex : -1),
@@ -253,7 +228,6 @@ function BattlegroundsGame() {
         console.error('❌ Error updating local answers from final results:', e);
       }
 
-      // Update user points based on final results (best-effort)
       try {
         if (user) {
           const playerScore = normalized.player1.username === user.username ? Number(normalized.player1.score ?? normalized.player1.points ?? 0) : Number(normalized.player2.score ?? normalized.player2.points ?? 0);
@@ -267,7 +241,7 @@ function BattlegroundsGame() {
       } catch (err) {
         console.error('❌ Error updating points after multiplayer game:', err);
       }
-  });
+    });
 
     socket.on('opponent-disconnected', () => {
       alert('Your opponent disconnected. Game ended.');
@@ -288,7 +262,6 @@ function BattlegroundsGame() {
       let questionsData;
 
       if (isMultiplayer && gameId) {
-        // First try to get stored questions
         try {
           console.log('🔍 Trying to get stored questions for game:', gameId);
           const storedResponse = await axios.get(`http://localhost:5000/api/battlegrounds-questions/game/${gameId}`);
@@ -296,13 +269,11 @@ function BattlegroundsGame() {
           console.log('✅ Loaded stored questions for game');
         } catch (storedError) {
           console.log('📝 Stored questions not found, generating new ones...');
-          // If stored questions don't exist, generate new ones
           const generateResponse = await axios.get(`http://localhost:5000/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}&gameId=${gameId}`);
           questionsData = generateResponse.data;
           console.log('✅ Generated new questions for game');
         }
       } else {
-        // Single player - generate new questions
         console.log('🔍 Generating questions for single player');
         const generateResponse = await axios.get(`http://localhost:5000/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
         questionsData = generateResponse.data;
@@ -313,11 +284,9 @@ function BattlegroundsGame() {
 
       let gameQuestions;
       if (questionsData.questions) {
-        // Response has questions array
-        gameQuestions = questionsData.questions.slice(0, 5);
+        gameQuestions = questionsData.questions.slice(0, 10);
       } else {
-        // Fallback for filter endpoint
-        gameQuestions = questionsData.slice(0, 5);
+        gameQuestions = questionsData.slice(0, 10);
       }
 
       console.log('✂️ Sliced questions:', gameQuestions);
@@ -346,7 +315,6 @@ function BattlegroundsGame() {
       const practiceData = response.data;
 
       if (practiceData.questions && practiceData.questions.length > 0) {
-        // Shuffle and take up to 10 questions
         const shuffledQuestions = practiceData.questions.sort(() => Math.random() - 0.5);
         const gameQuestions = shuffledQuestions.slice(0, 10);
         setQuestions(gameQuestions);
@@ -355,7 +323,6 @@ function BattlegroundsGame() {
       } else {
         console.log('⚠️ No practice questions found for the selected criteria');
         alert('No practice questions available for the selected criteria. Please play some games first to save questions for practice!');
-        // Redirect back to battlegrounds
         window.location.href = '/battlegrounds';
       }
     } catch (err) {
@@ -366,29 +333,22 @@ function BattlegroundsGame() {
   };
 
   const handleAnswerSelect = (answerIndex) => {
-    if (selectedAnswer !== null) return; // Don't allow selection if already selected
+    if (selectedAnswer !== null) return;
 
-    // Capture current timeLeft snapshot
     const timeSnapshot = timeLeft;
-
-    // Set local selection immediately for UI
     setSelectedAnswer(answerIndex);
 
-    // Clear the countdown timer so it doesn't also trigger next-question
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
 
-    // Proceed to next question after a short delay to show selection
     setTimeout(() => {
       handleNextQuestion(answerIndex, timeSnapshot);
-    }, 700); // short delay to show selected state
+    }, 700);
   };
 
-  // Timer effect
   useEffect(() => {
-    // Countdown timer for question
     if (gameState === 'playing' && timeLeft > 0) {
       timerRef.current = setTimeout(() => {
         setTimeLeft(prev => prev - 1);
@@ -400,44 +360,16 @@ function BattlegroundsGame() {
         }
       };
     } else if (gameState === 'playing' && timeLeft === 0) {
-      // Time's up - submit as no answer
       handleNextQuestion(-1, 0);
     }
   }, [timeLeft, gameState]);
 
-  const handlePowerUp = (type) => {
-    if (usedPowerUps[type]) return;
-
-    setUsedPowerUps(prev => ({ ...prev, [type]: true }));
-
-    switch (type) {
-      case 'fiftyFifty':
-        // Remove two wrong answers
-        const currentQ = questions[currentQuestionIndex];
-        const wrongOptions = currentQ.options.filter((_, index) => index !== currentQ.correctAnswer);
-        const optionsToRemove = wrongOptions.slice(0, 2);
-        // In a real implementation, you'd modify the displayed options
-        alert('50/50 used! Two wrong answers removed.');
-        break;
-      case 'extraTime':
-        setTimeLeft(prev => prev + 15);
-        alert('Extra time added! +15 seconds');
-        break;
-      case 'skipQuestion':
-        handleNextQuestion();
-        alert('Question skipped!');
-        break;
-    }
-  };
-
   const handleNextQuestion = (submittedAnswer, timeLeftAtSubmit) => {
     const currentQuestion = questions[currentQuestionIndex];
 
-    // Decide which answer to process: prefer submittedAnswer parameter if provided
     const usedAnswer = typeof submittedAnswer === 'number' ? submittedAnswer : (selectedAnswer !== null ? selectedAnswer : -1);
     const timeUsed = typeof timeLeftAtSubmit === 'number' ? (30 - timeLeftAtSubmit) : (30 - timeLeft);
 
-    // Update answers array (isCorrect will be determined by backend for multiplayer)
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = {
       questionId: currentQuestion.id,
@@ -447,36 +379,31 @@ function BattlegroundsGame() {
     };
     setAnswers(newAnswers);
 
-    // For single player, calculate and update score locally
     if (!isMultiplayer) {
       const isCorrect = usedAnswer !== null && usedAnswer !== -1 ? usedAnswer === currentQuestion.correctAnswer : false;
       if (isCorrect) {
-        const points = currentQuestion.points + Math.floor((timeLeftAtSubmit ?? timeLeft) / 3); // Bonus for speed
+        const points = currentQuestion.points + Math.floor((timeLeftAtSubmit ?? timeLeft) / 3);
         setScore(prevScore => prevScore + points);
       }
     }
 
     if (isMultiplayer && socket) {
-      // Send answer to server (backend will validate)
       socket.emit('submit-answer', {
         gameId,
         questionIndex: currentQuestionIndex,
-        answerIndex: usedAnswer !== null ? usedAnswer : -1, // Send -1 for no answer
+        answerIndex: usedAnswer !== null ? usedAnswer : -1,
         timeLeft: typeof timeLeftAtSubmit === 'number' ? timeLeftAtSubmit : timeLeft
       });
       
-      // Proceed to next question immediately (independent progression)
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedAnswer(null);
         setTimeLeft(30);
       } else {
-        // Last question - notify backend and wait for final results
         socket.emit('game-complete', { gameId });
         setGameState('waiting-opponent');
       }
     } else {
-      // Single player mode
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedAnswer(null);
@@ -488,10 +415,8 @@ function BattlegroundsGame() {
   };
 
   const finishGame = async () => {
-    // Don't set game state here - it will be set by game-final-results event
     console.log('🎮 Game completion initiated');
 
-    // Helper: compute final score deterministically from answers and questions
     const computeFinalScore = () => {
       try {
         if (!questions || questions.length === 0) return 0;
@@ -516,8 +441,6 @@ function BattlegroundsGame() {
     };
 
     if (isMultiplayer && socket) {
-      // Notify server that game is complete (already sent above)
-      // Save questions for practice instead of deleting (only if not in practice mode)
       if (gameId && questions.length > 0 && mode !== 'practice') {
         try {
           await axios.post('http://localhost:5000/api/battlegrounds-questions/save-practice', {
@@ -533,13 +456,10 @@ function BattlegroundsGame() {
         }
       }
     } else {
-      // Single player - finish immediately
       setGameState('finished');
 
-      // Compute final points from answers (avoid relying on possibly-stale `score` state)
       const finalPoints = computeFinalScore();
 
-      // For single player, also save questions for practice (only if not in practice mode)
       if (questions.length > 0 && mode !== 'practice') {
         try {
           await axios.post('http://localhost:5000/api/battlegrounds-questions/save-practice', {
@@ -555,7 +475,6 @@ function BattlegroundsGame() {
         }
       }
 
-      // Update user points with the computed finalPoints
       try {
         await axios.post('http://localhost:5000/auth/update_points', {
           points: finalPoints,
@@ -567,7 +486,6 @@ function BattlegroundsGame() {
       }
     }
 
-    // Update user points in backend
     try {
       await axios.post('http://localhost:5000/auth/update_points', {
         points: score,
@@ -595,11 +513,11 @@ function BattlegroundsGame() {
 
   if (gameState === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A1F2B]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-lg font-semibold mb-2">Generating Questions</p>
-          <p className="text-gray-600">AI is creating personalized questions for your battle...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9AE9FD] mx-auto mb-4"></div>
+          <p className="text-lg font-semibold mb-2 text-[#9AE9FD]">Generating Questions</p>
+          <p className="text-gray-400">AI is creating personalized questions for your battle...</p>
           <p className="text-sm text-gray-500 mt-2">This may take a few seconds</p>
         </div>
       </div>
@@ -608,11 +526,11 @@ function BattlegroundsGame() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A1F2B]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p>Loading user data...</p>
-          <p className="text-sm text-gray-600 mt-2">If this takes too long, please log in again.</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9AE9FD] mx-auto mb-4"></div>
+          <p className="text-[#9AE9FD]">Loading user data...</p>
+          <p className="text-sm text-gray-400 mt-2">If this takes too long, please log in again.</p>
         </div>
       </div>
     );
@@ -620,15 +538,15 @@ function BattlegroundsGame() {
 
   if (gameState === 'waiting') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A1F2B]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <h2 className="text-2xl mb-4">Finding Opponent</h2>
-          <p className="text-gray-600 mb-2">Looking for another player...</p>
+          <h2 className="text-2xl mb-4 text-[#9AE9FD]">Finding Opponent</h2>
+          <p className="text-gray-400 mb-2">Looking for another player...</p>
           <p className="text-sm text-gray-500">Please wait while we match you with an opponent</p>
           {!user && (
             <div className="mt-4">
-              <p className="text-sm text-red-600">Loading user data...</p>
+              <p className="text-sm text-red-400">Loading user data...</p>
             </div>
           )}
         </div>
@@ -684,18 +602,18 @@ function BattlegroundsGame() {
 
   if (gameState === 'waiting-opponent') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A1F2B]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
-          <h2 className="text-2xl mb-4">Quiz Complete!</h2>
-          <p className="text-gray-600 mb-2">Waiting for {opponent?.username} to finish...</p>
+          <h2 className="text-2xl mb-4 text-[#9AE9FD]">Quiz Complete!</h2>
+          <p className="text-gray-400 mb-2">Waiting for {opponent?.username} to finish...</p>
           <p className="text-sm text-gray-500">Your final score: {score} points</p>
-          <div className="mt-6 bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-semibold mb-2">Your Performance</h3>
+          <div className="mt-6 bg-[#1E3A47] p-4 rounded shadow">
+            <h3 className="text-lg font-semibold mb-2 text-[#9AE9FD]">Your Performance</h3>
             <div className="grid grid-cols-5 gap-2">
               {answers.map((answer, index) => (
                 <div key={index} className={`p-2 rounded text-center text-sm ${
-                  answer.isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  answer.isCorrect ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'
                 }`}>
                   Q{index + 1}
                 </div>
@@ -713,27 +631,27 @@ function BattlegroundsGame() {
       getResultMessage();
 
     return (
-      <div className="min-h-screen bg-gray-100 p-4">
+      <div className="min-h-screen bg-[#0A1F2B] p-4">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white p-8 rounded shadow text-center mb-6">
-            <h1 className="text-3xl mb-4">Battle Complete!</h1>
+          <div className="bg-[#1E3A47] p-8 rounded shadow text-center mb-6">
+            <h1 className="text-3xl mb-4 text-[#9AE9FD]">Battle Complete!</h1>
             <div className="mb-6">
-              <p className="text-xl mb-2">{resultMessage}</p>
+              <p className="text-xl mb-2 text-white">{resultMessage}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="bg-blue-50 p-4 rounded">
-                  <h3 className="text-lg font-semibold">Your Score</h3>
-                  <p className="text-2xl text-blue-600">{score} points</p>
-                  {finalResults && <p className="text-sm text-gray-600">{user?.username}</p>}
+                <div className="bg-blue-500/20 p-4 rounded">
+                  <h3 className="text-lg font-semibold text-blue-300">Your Score</h3>
+                  <p className="text-2xl text-blue-400">{score} points</p>
+                  {finalResults && <p className="text-sm text-gray-400">{user?.username}</p>}
                 </div>
                 {(isMultiplayer || mode !== 'practice') && (
-                  <div className="bg-red-50 p-4 rounded">
-                    <h3 className="text-lg font-semibold">
+                  <div className="bg-red-500/20 p-4 rounded">
+                    <h3 className="text-lg font-semibold text-red-300">
                       {isMultiplayer ? 'Opponent Score' : 'AI Score'}
                     </h3>
-                    <p className="text-2xl text-red-600">
+                    <p className="text-2xl text-red-400">
                       {isMultiplayer ? opponentScore : opponentScore} points
                     </p>
-                    {finalResults && <p className="text-sm text-gray-600">{opponent?.username}</p>}
+                    {finalResults && <p className="text-sm text-gray-400">{opponent?.username}</p>}
                   </div>
                 )}
               </div>
@@ -741,47 +659,44 @@ function BattlegroundsGame() {
           </div>
 
           {/* Detailed Analytics */}
-          <div className="bg-white p-6 rounded shadow">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Battle Analytics</h2>
+          <div className="bg-[#1E3A47] p-6 rounded shadow">
+            <h2 className="text-2xl font-semibold mb-6 text-center text-[#9AE9FD]">Battle Analytics</h2>
             
             <div className="space-y-6">
               {questions.map((question, index) => {
                 const userAnswer = answers[index];
-                // Try to get opponent answers from finalResults.answers map first (server provides this),
-                // otherwise fall back to finalResults.playerX.answers
                 let opponentAnswer = null;
                 if (finalResults) {
-                  // Prefer lookup by userId; fall back to username
                   const key = opponent?.userId || opponent?.username;
                   opponentAnswer = finalResults.answers?.[key]?.[index] ??
                     (finalResults.player1?.username === opponent?.username ? finalResults.player1.answers?.[index] : finalResults.player2?.answers?.[index]);
                 }
                 
                 return (
-                  <div key={index} className="border rounded-lg p-4">
-                    <h3 className="text-lg font-medium mb-3">Question {index + 1}</h3>
-                    <p className="text-gray-800 mb-4">{question.question}</p>
+                  <div key={index} className="border border-gray-600 rounded-lg p-4 bg-[#0A1F2B]">
+                    <h3 className="text-lg font-medium mb-3 text-[#9AE9FD]">Question {index + 1}</h3>
+                    <p className="text-gray-300 mb-4">{question.question}</p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Your Answer */}
-                      <div className="bg-blue-50 p-3 rounded">
-                        <h4 className="font-semibold text-blue-800">{user?.username}</h4>
-                        <p className={`text-sm ${userAnswer?.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                      <div className="bg-blue-500/20 p-3 rounded">
+                        <h4 className="font-semibold text-blue-300">{user?.username}</h4>
+                        <p className={`text-sm ${userAnswer?.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
                           {userAnswer && userAnswer.selectedAnswer !== -1 ? question.options[userAnswer.selectedAnswer] : 'No answer'}
                         </p>
-                        <p className="text-xs text-gray-600 mt-1">
+                        <p className="text-xs text-gray-400 mt-1">
                           {userAnswer?.isCorrect ? '✅ Correct' : userAnswer && userAnswer.selectedAnswer === -1 ? '⏰ Time out' : '❌ Incorrect'}
                         </p>
                       </div>
                       
                       {/* Opponent Answer */}
                       {isMultiplayer && (
-                        <div className="bg-red-50 p-3 rounded">
-                          <h4 className="font-semibold text-red-800">{opponent?.username}</h4>
-                          <p className={`text-sm ${opponentAnswer?.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                        <div className="bg-red-500/20 p-3 rounded">
+                          <h4 className="font-semibold text-red-300">{opponent?.username}</h4>
+                          <p className={`text-sm ${opponentAnswer?.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
                             {opponentAnswer && opponentAnswer.selectedAnswer !== -1 ? question.options[opponentAnswer.selectedAnswer] : 'No answer'}
                           </p>
-                          <p className="text-xs text-gray-600 mt-1">
+                          <p className="text-xs text-gray-400 mt-1">
                             {opponentAnswer?.isCorrect ? '✅ Correct' : opponentAnswer && opponentAnswer.selectedAnswer === -1 ? '⏰ Time out' : '❌ Incorrect'}
                           </p>
                         </div>
@@ -789,9 +704,9 @@ function BattlegroundsGame() {
                     </div>
                     
                     {/* Correct Answer */}
-                    <div className="mt-3 p-3 bg-green-50 rounded">
-                      <h4 className="font-semibold text-green-800">Correct Answer</h4>
-                      <p className="text-green-700">{question.options[question.correctAnswer]}</p>
+                    <div className="mt-3 p-3 bg-green-500/20 rounded">
+                      <h4 className="font-semibold text-green-300">Correct Answer</h4>
+                      <p className="text-green-400">{question.options[question.correctAnswer]}</p>
                     </div>
                   </div>
                 );
@@ -801,13 +716,13 @@ function BattlegroundsGame() {
 
           <div className="mt-6 text-center">
             <div className="flex gap-4 justify-center">
-              <Link to="/battlegrounds/lobby" className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">
+              <Link to="/battlegrounds/lobby" className="bg-[#9AE9FD] text-[#002732] px-6 py-3 rounded hover:bg-[#7FB3C1] font-bold">
                 Play Again
               </Link>
-              <Link to="/battlegrounds/leaderboard" className="bg-purple-500 text-white px-6 py-3 rounded hover:bg-purple-600">
+              <Link to="/leaderboard" className="bg-purple-600 text-white px-6 py-3 rounded hover:bg-purple-700 font-bold">
                 View Leaderboard
               </Link>
-              <Link to="/dashboard" className="bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600">
+              <Link to="/dashboard" className="bg-gray-600 text-white px-6 py-3 rounded hover:bg-gray-700 font-bold">
                 Back to Dashboard
               </Link>
             </div>
@@ -820,32 +735,35 @@ function BattlegroundsGame() {
   const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {
-    return <div className="min-h-screen flex items-center justify-center">No questions available</div>;
+    return <div className="min-h-screen flex items-center justify-center bg-[#0A1F2B] text-[#9AE9FD]">No questions available</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div 
+      className="min-h-screen bg-[linear-gradient(180deg,rgba(10,31,43,1)_0%,rgba(20,78,94,1)_100%)] text-white p-4"
+      style={{ fontFamily: "Inter, sans-serif" }}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white p-4 rounded shadow mb-4">
+        <div className="bg-[#1E3A47] p-6 rounded-3xl shadow mb-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-xl font-semibold">Battlegrounds - {subject}</h1>
-              <p className="text-sm text-gray-600">Question {currentQuestionIndex + 1} of {questions.length}</p>
+              <h1 className="text-2xl font-bold text-[#9AE9FD]">Battlegrounds - {subject}</h1>
+              <p className="text-sm text-gray-400">Question {currentQuestionIndex + 1} of {questions.length}</p>
               {isMultiplayer && opponent && (
-                <p className="text-sm text-purple-600">vs {opponent.username}</p>
+                <p className="text-sm text-purple-400">vs {opponent.username}</p>
               )}
             </div>
             <div className="text-right">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-lg font-bold text-blue-600">{score} points</div>
-                  <div className="text-xs text-gray-600">Your Points</div>
+                  <div className="text-2xl font-bold text-[#9AE9FD]">{score} points</div>
+                  <div className="text-xs text-gray-400">Your Points</div>
                 </div>
                 {isMultiplayer && (
                   <div>
-                    <div className="text-lg font-bold text-red-600">{opponentScore} points</div>
-                    <div className="text-xs text-gray-600">Opponent</div>
+                    <div className="text-2xl font-bold text-red-400">{opponentScore} points</div>
+                    <div className="text-xs text-gray-400">Opponent</div>
                   </div>
                 )}
               </div>
@@ -854,83 +772,81 @@ function BattlegroundsGame() {
         </div>
 
         {/* Timer */}
-        <div className="bg-white p-4 rounded shadow mb-4">
+        <div className="bg-[#1E3A47] p-4 rounded-2xl shadow mb-6">
           <div className="flex justify-between items-center">
-            <span className="text-lg font-medium">Time Left:</span>
-            <span className={`text-2xl font-bold ${timeLeft <= 10 ? 'text-red-500' : 'text-green-500'}`}>
+            <span className="text-lg font-medium text-white">Time Left:</span>
+            <span className={`text-3xl font-bold ${timeLeft <= 10 ? 'text-red-400' : 'text-[#9AE9FD]'}`}>
               {timeLeft}s
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+          <div className="w-full bg-gray-700 rounded-full h-3 mt-3">
             <div
-              className="bg-blue-500 h-2 rounded-full transition-all duration-1000"
+              className={`h-3 rounded-full transition-all duration-1000 ${
+                timeLeft <= 10 ? 'bg-red-500' : 'bg-[#9AE9FD]'
+              }`}
               style={{ width: `${(timeLeft / 30) * 100}%` }}
             ></div>
           </div>
         </div>
 
         {/* Question */}
-        <div className="bg-white p-6 rounded shadow mb-4">
-          <h2 className="text-xl mb-6">{currentQuestion.question}</h2>
+        <div className="bg-[#7FB3C1] p-8 rounded-3xl shadow mb-6">
+          <div className="bg-[#5A9AA8] rounded-2xl p-6 mb-6">
+            <div className="flex items-start gap-4">
+              <div className="text-6xl font-black text-[#002732]">Q.</div>
+              <div className="flex-1">
+                <h2 className="text-2xl font-medium text-[#002732] leading-relaxed">
+                  {currentQuestion.question}
+                </h2>
+              </div>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {currentQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerSelect(index)}
-                className={`p-4 border-2 rounded-lg text-left transition-all ${
-                  selectedAnswer === index
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
-              >
-                <span className="font-medium mr-2">
-                  {String.fromCharCode(65 + index)}.
-                </span>
-                {option}
-              </button>
-            ))}
+            {currentQuestion.options.map((option, index) => {
+              // Determine classes based on whether an answer was selected and correctness
+              let optionClass = 'bg-[#002732] text-white hover:bg-[#1E2A32]';
+              if (selectedAnswer !== null) {
+                // After selection: highlight correct answer green, selected wrong answer red, others muted
+                if (index === currentQuestion.correctAnswer) {
+                  optionClass = 'bg-green-500 text-white';
+                } else if (selectedAnswer === index && selectedAnswer !== currentQuestion.correctAnswer) {
+                  optionClass = 'bg-red-500 text-white';
+                } else {
+                  optionClass = 'bg-[#002732] text-gray-300';
+                }
+              }
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleAnswerSelect(index)}
+                  disabled={selectedAnswer !== null}
+                  className={`p-4 rounded-xl text-left font-medium transition-all duration-300 ${optionClass}`}
+                >
+                  <span className="font-bold mr-3 text-lg">
+                    {String.fromCharCode(65 + index)}.
+                  </span>
+                  {option}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Power-ups */}
-        <div className="bg-yellow-50 p-4 rounded shadow mb-4">
-          <h3 className="text-lg font-semibold mb-3">Power-ups</h3>
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => handlePowerUp('fiftyFifty')}
-              disabled={usedPowerUps.fiftyFifty}
-              className={`px-4 py-2 rounded text-sm font-medium ${
-                usedPowerUps.fiftyFifty
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-yellow-500 text-white hover:bg-yellow-600'
-              }`}
-            >
-              50/50 🎯
-            </button>
-            <button
-              onClick={() => handlePowerUp('extraTime')}
-              disabled={usedPowerUps.extraTime}
-              className={`px-4 py-2 rounded text-sm font-medium ${
-                usedPowerUps.extraTime
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-blue-500 text-white hover:bg-blue-600'
-              }`}
-            >
-              +15s ⏰
-            </button>
-            <button
-              onClick={() => handlePowerUp('skipQuestion')}
-              disabled={usedPowerUps.skipQuestion}
-              className={`px-4 py-2 rounded text-sm font-medium ${
-                usedPowerUps.skipQuestion
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-purple-500 text-white hover:bg-purple-600'
-              }`}
-            >
-              Skip 🚀
-            </button>
-          </div>
+        {/* Next Button */}
+        <div className="text-center">
+          <button
+            onClick={() => handleNextQuestion(selectedAnswer, timeLeft)}
+            disabled={selectedAnswer === null}
+            className={`px-12 py-4 rounded-2xl font-bold text-xl transition-all ${
+              selectedAnswer !== null 
+                ? 'bg-[#002732] text-white hover:bg-[#1E2A32]' 
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

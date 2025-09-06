@@ -1,0 +1,72 @@
+/* --- Import a more modern, tech-friendly font --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* --- Main container for the screen/panel effect --- */
+.scroll-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  max-height: 0;
+  transition: max-height 1.2s cubic-bezier(0.86, 0, 0.07, 1);
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.scroll-container.unrolled {
+  max-height: 1000px; /* Adjust if your content is taller */
+}
+
+/* --- The main content area with a digital texture --- */
+.scroll-content {
+  background-color: #0F2933; /* Dark background from your theme */
+  background-image: url('https://www.transparenttextures.com/patterns/clean-textile.png'); /* Subtle digital grid texture */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(34, 211, 238, 0.1);
+  border-left: 1px solid rgba(34, 211, 238, 0.2);
+  border-right: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+/* --- Replacing the wooden rolls with glowing, sci-fi caps --- */
+.scroll-top,
+.scroll-bottom {
+  height: 40px;
+  background: linear-gradient(to right, #0A2229, #1A3A4A, #0A2229); /* Dark metallic gradient */
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+  position: relative;
+  z-index: 2;
+  border-bottom: 2px solid #22D3EE;
+  border-top: 2px solid #22D3EE;
+}
+
+/* --- Adding a subtle glowing line effect to the caps --- */
+.scroll-top::before,
+.scroll-bottom::after {
+  content: '';
+  position: absolute;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
+  border-radius: 50%;
+}
+
+.scroll-top::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.scroll-bottom::after {
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+/* --- Changing the font inside the scroll to match the new theme --- */
+.scroll-content h1, .scroll-content h2 {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.scroll-content p, .scroll-content li {
+  font-family: 'Inter', sans-serif !important;
+}

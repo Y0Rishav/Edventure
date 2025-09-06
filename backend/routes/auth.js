@@ -7,11 +7,12 @@ const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 // Passport config
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/auth/google/callback'
-}, async (accessToken, refreshToken, profile, done) => {
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/google/callback'
+  }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ googleId: profile.id });
     if (user) {
@@ -28,7 +29,10 @@ passport.use(new GoogleStrategy({
   } catch (err) {
     done(err, null);
   }
-}));
+  }));
+} else {
+  console.log('⚠️ GOOGLE_CLIENT_ID/SECRET not set - skipping Google OAuth setup');
+}
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -50,9 +54,43 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
   res.redirect('http://localhost:5173/dashboard');
 });
 
+// Logout (GET) - used by browser redirects
 router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
+  // Passport's logout may be async in newer versions
+  req.logout(function(err) {
+    if (err) console.error('Logout error:', err);
+    // Destroy session and clear cookie
+    if (req.session) {
+      req.session.destroy(function(err) {
+        if (err) console.error('Session destroy error:', err);
+        res.clearCookie('connect.sid');
+        return res.redirect('/');
+      });
+    } else {
+      res.clearCookie('connect.sid');
+      return res.redirect('/');
+    }
+  });
+});
+
+// Logout (POST) - allow AJAX/axios logout from client
+router.post('/logout', (req, res) => {
+  req.logout(function(err) {
+    if (err) {
+      console.error('Logout error:', err);
+      // continue to try destroy session
+    }
+    if (req.session) {
+      req.session.destroy(function(err) {
+        if (err) console.error('Session destroy error:', err);
+        res.clearCookie('connect.sid');
+        return res.sendStatus(200);
+      });
+    } else {
+      res.clearCookie('connect.sid');
+      return res.sendStatus(200);
+    }
+  });
 });
 
 router.get('/current_user', (req, res) => {
@@ -100,8 +138,18 @@ router.post('/update_points', async (req, res) => {
 
 router.get('/leaderboard', async (req, res) => {
   try {
-    const users = await User.find({}).sort({ points: -1 }).limit(10).select('name username points badges');
-    res.json(users);
+    // Top 10 users
+    const top = await User.find({}).sort({ points: -1 }).limit(10).select('name username points badges');
+
+    // If a user is authenticated, compute their global rank
+    let rank = null;
+    if (req.user) {
+      // Count users with more points than current user
+      const better = await User.countDocuments({ points: { $gt: req.user.points } });
+      rank = better + 1;
+    }
+
+    res.json({ top, rank });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -59,7 +59,7 @@ function Battlegrounds() {
             <p className="text-slate-600 text-sm">Challenge yourself and compete!</p>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/battlegrounds/leaderboard" className="text-slate-700 hover:text-slate-900 text-sm font-medium">
+            <Link to="/leaderboard" className="text-slate-700 hover:text-slate-900 text-sm font-medium">
               🏆 Leaderboard
             </Link>
             <Link to="/dashboard" className="text-slate-700 hover:text-slate-900 text-sm font-medium">

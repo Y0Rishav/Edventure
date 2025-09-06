@@ -200,41 +200,60 @@ router.post('/battlegrounds-questions/save-practice', (req, res) => {
   }
 });
 
-// Get practice questions
-router.get('/battlegrounds-questions/practice', (req, res) => {
+// Get practice questions - generate fresh via Gemini when possible, otherwise fallback to stored file
+router.get('/battlegrounds-questions/practice', async (req, res) => {
   try {
     const { subject, difficulty, class: classLevel, limit } = req.query;
-    const practiceFilePath = path.join(__dirname, '../practice-questions.json');
 
-    if (!fs.existsSync(practiceFilePath)) {
-      return res.json({ questions: [] });
+    // Validate required params for generation
+    if (!subject || !difficulty || !classLevel) {
+      return res.status(400).json({ error: 'Missing required parameters: subject, difficulty, class' });
     }
 
-    const data = fs.readFileSync(practiceFilePath, 'utf8');
-    const practiceData = JSON.parse(data);
-
-    let filteredQuestions = practiceData.questions;
-
-    // Apply filters
-    if (subject) {
-      filteredQuestions = filteredQuestions.filter(q => q.subject === subject);
-    }
-    if (difficulty) {
-      filteredQuestions = filteredQuestions.filter(q => q.difficulty === difficulty);
-    }
-    if (classLevel) {
-      filteredQuestions = filteredQuestions.filter(q => q.class === parseInt(classLevel) || q.classLevel === parseInt(classLevel));
-    }
-
-    // Shuffle and limit
-    const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
     const limitNum = limit ? parseInt(limit) : 10;
-    const selectedQuestions = shuffled.slice(0, limitNum);
 
-    console.log(`📚 Loaded ${selectedQuestions.length} practice questions`);
-    res.json({ questions: selectedQuestions });
+    try {
+      // Attempt to generate fresh practice questions via Gemini
+      console.log(`🎯 Generating practice questions for: ${subject}, ${difficulty}, Class ${classLevel}`);
+      const generated = await generateQuestions(subject, difficulty, parseInt(classLevel));
+
+      // generated is expected to be an array (generateQuestions returns questions array)
+      const selected = Array.isArray(generated) ? generated.slice(0, limitNum) : [];
+      return res.json({ questions: selected });
+    } catch (genError) {
+      // If generation fails (missing API key or other error), fallback to stored practice file
+      console.warn('Gemini generation failed, falling back to stored practice file:', genError.message || genError);
+      const practiceFilePath = path.join(__dirname, '../practice-questions.json');
+
+      if (!fs.existsSync(practiceFilePath)) {
+        return res.json({ questions: [] });
+      }
+
+      const data = fs.readFileSync(practiceFilePath, 'utf8');
+      const practiceData = JSON.parse(data);
+
+      let filteredQuestions = practiceData.questions;
+
+      // Apply filters
+      if (subject) {
+        filteredQuestions = filteredQuestions.filter(q => q.subject === subject);
+      }
+      if (difficulty) {
+        filteredQuestions = filteredQuestions.filter(q => q.difficulty === difficulty);
+      }
+      if (classLevel) {
+        filteredQuestions = filteredQuestions.filter(q => q.class === parseInt(classLevel) || q.classLevel === parseInt(classLevel));
+      }
+
+      // Shuffle and limit
+      const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
+      const selectedQuestions = shuffled.slice(0, limitNum);
+
+      console.log(`📚 Loaded ${selectedQuestions.length} practice questions from file`);
+      return res.json({ questions: selectedQuestions });
+    }
   } catch (error) {
-    console.error('Error loading practice questions:', error);
+    console.error('Error handling practice questions request:', error);
     res.status(500).json({ error: 'Failed to load practice questions' });
   }
 });
