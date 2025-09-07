@@ -54,7 +54,13 @@ app.use(express.json());
 app.use(session({
   secret: process.env.JWT_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Allow cross-site in production
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  },
+  proxy: true // Trust proxy for secure cookies
 }));
 app.use(passport.initialize());
 app.use(passport.session());
