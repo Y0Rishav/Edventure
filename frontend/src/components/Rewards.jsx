@@ -3,6 +3,31 @@ import { Lock, Unlock, Star, Trophy, BookOpen, Award, Zap } from 'lucide-react';
 import axios from 'axios';
 import SideBar from './SideBar';
 
+// FlameIcon component for gamified streak display
+const FlameIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="10" fill="url(#streak-glow)" />
+    <path
+      d="M13 2L6 14H12L11 22L18 10H12L13 2Z"
+      fill="url(#streak-bolt)"
+      stroke="#fff"
+      strokeWidth="1"
+      strokeLinejoin="round"
+    />
+    <defs>
+      <radialGradient id="streak-glow" cx="0" cy="0" r="1" gradientTransform="translate(12 12) scale(10)" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFD700" stopOpacity="0.7"/>
+        <stop offset="1" stopColor="#FFD700" stopOpacity="0"/>
+      </radialGradient>
+      <linearGradient id="streak-bolt" x1="6" y1="2" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFD700"/>
+        <stop offset="0.5" stopColor="#FF9100"/>
+        <stop offset="1" stopColor="#FF3C00"/>
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 function Rewards() {
   const [userPoints, setUserPoints] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -12,14 +37,13 @@ function Rewards() {
   const handleLogout = async () => {
     try {
       await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
-      // Redirect to login or home
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
 
-  // --- 1. MODIFIED: Fetch user data and unlocked courses ---
+  // Fetch user data and unlocked courses
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -29,7 +53,6 @@ function Rewards() {
         const data = response.data;
         if (data) {
           setUserPoints(data.points);
-          // Initialize the unlocked courses from the database
           setUnlockedCourses(new Set(data.unlockedCourses || [1]));
         }
         setLoading(false);
@@ -52,7 +75,7 @@ function Rewards() {
       level: "Beginner",
       icon: <BookOpen className="w-8 h-8" />,
       color: "bg-green-500",
-      gradient: "from-green-400 to-green-600"
+      gradient: "from-green-500 to-green-700"
     },
     {
       id: 2,
@@ -63,7 +86,7 @@ function Rewards() {
       level: "Intermediate",
       icon: <Zap className="w-8 h-8" />,
       color: "bg-blue-500",
-      gradient: "from-blue-400 to-blue-600"
+      gradient: "from-blue-500 to-blue-700"
     },
     {
       id: 3,
@@ -74,7 +97,7 @@ function Rewards() {
       level: "Intermediate",
       icon: <Star className="w-8 h-8" />,
       color: "bg-yellow-500",
-      gradient: "from-yellow-400 to-yellow-600"
+      gradient: "from-yellow-500 to-yellow-700"
     },
     {
       id: 4,
@@ -85,7 +108,7 @@ function Rewards() {
       level: "Advanced",
       icon: <Trophy className="w-8 h-8" />,
       color: "bg-purple-500",
-      gradient: "from-purple-400 to-purple-600"
+      gradient: "from-purple-500 to-purple-700"
     },
     {
       id: 5,
@@ -96,7 +119,7 @@ function Rewards() {
       level: "Advanced",
       icon: <Award className="w-8 h-8" />,
       color: "bg-red-500",
-      gradient: "from-red-400 to-red-600"
+      gradient: "from-red-500 to-red-700"
     },
     {
       id: 6,
@@ -107,7 +130,7 @@ function Rewards() {
       level: "Expert",
       icon: <Trophy className="w-8 h-8" />,
       color: "bg-indigo-500",
-      gradient: "from-indigo-400 to-indigo-600"
+      gradient: "from-indigo-500 to-indigo-700"
     }
   ];
 
@@ -119,13 +142,11 @@ function Rewards() {
     return userPoints >= required;
   };
 
-  // --- 2. MODIFIED: Call the new backend route ---
+  // Handle course unlocking
   const handleUnlockCourse = async (course) => {
     if (canUnlock(course.pointsRequired) && !isUnlocked(course.id)) {
       try {
         const newPoints = userPoints - course.pointsRequired;
-        
-        // Call the new dedicated route for unlocking a course
         const response = await axios.post('http://localhost:5000/auth/unlock-course', 
           { 
             newPoints: newPoints,
@@ -138,7 +159,6 @@ function Rewards() {
         );
 
         if (response.status === 200) {
-          // Update frontend state only after successful backend update
           setUserPoints(newPoints);
           setUnlockedCourses(prev => new Set([...prev, course.id]));
         } else {
@@ -152,136 +172,108 @@ function Rewards() {
     }
   };
 
+  // Calculate progress to next course
+  const nextCourse = courses.find(course => !isUnlocked(course.id) && course.pointsRequired > 0);
+  const progressToNext = nextCourse ? Math.min((userPoints / nextCourse.pointsRequired) * 100, 100) : 100;
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0A1F2B] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9BE9FD]"></div>
+        <div className="text-[#9AE9FD] text-xl">Loading...</div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-[#0A1F2B] text-white" style={{ fontFamily: "Inter, sans-serif" }}>
-      {/* Sidebar */}
       <SideBar onLogout={handleLogout} />
+      <div className="ml-64 p-8">
+        {/* Header */}
+        <div className="bg-[#7FB3C1] rounded-2xl p-6 mb-8">
+          <h1 className="text-3xl font-bold text-[#002732] mb-4 text-center">Rewards & Courses</h1>
 
-      {/* Main Content Container */}
-      <div className="flex-1 ml-64 py-8 px-4">
-        {/* Main Content */}
-        <div className="max-w-6xl mx-auto z-10">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-[#9BE9FD] mb-4">
-              🎉 Rewards & Courses
-            </h1>
-            <p className="text-xl text-white/80 mb-6">
-              Unlock premium courses by earning points!
-            </p>
-            
-            {/* Points Display */}
-            <div className="bg-[#0A1A2E] rounded-2xl shadow-lg p-6 max-w-md mx-auto border border-[#9BE9FD]/30">
-              <div className="flex items-center justify-center mb-4">
-                <Star className="w-8 h-8 text-[#9BE9FD] mr-3" />
-                <span className="text-3xl font-bold text-[#9BE9FD]">{userPoints}</span>
-                <span className="text-lg text-gray-200 ml-2">Points</span>
-              </div>
-              <div className="text-sm text-gray-400">Keep learning to earn more points!</div>
+          <p className="text-lg text-[#002732] mb-6 text-center">Unlock epic courses by earning points!</p>
+          <div className="bg-[#1E3A47] rounded-xl p-4 max-w-md mx-auto border border-[#2A4A57]">
+            <div className="flex items-center justify-center mb-4">
+              <Star className="w-8 h-8 text-[#9AE9FD] mr-3" />
+              <span className="text-3xl font-bold text-[#9AE9FD]">{userPoints}</span>
+              <span className="text-lg text-white ml-2">Points</span>
             </div>
-          </div>
-
-          {/* Courses Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course) => {
-              const unlocked = isUnlocked(course.id);
-              const canAfford = canUnlock(course.pointsRequired);
-              const isFree = course.pointsRequired === 0;
-              
-              return (
-                <div
-                  key={course.id}
-                  className={`bg-[#0A1A2E] rounded-[30px] shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-[#9BE9FD]/30 hover:border-[#9BE9FD]/50 ${
-                    unlocked ? 'ring-2 ring-[#9BE9FD]/60' : canAfford ? 'hover:scale-105 hover:shadow-[#9BE9FD]/20' : 'opacity-75'
-                  }`}
-                >
-                  {/* Course Header */}
-                  <div className={`bg-gradient-to-r ${course.gradient} p-6 text-white relative`}>
-                    {unlocked && (
-                      <div className="absolute top-4 right-4 bg-[#9BE9FD]/20 rounded-full p-2">
-                        <Unlock className="w-5 h-5" />
-                      </div>
-                    )}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        {course.icon}
-                        <span className="ml-3 text-sm font-semibold">{course.level}</span>
-                      </div>
-                      <div className="flex items-center">
-                        {!unlocked && (
-                          <Lock className="w-6 h-6" />
-                        )}
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">{course.title}</h3>
-                    <p className="text-sm opacity-90">{course.duration}</p>
-                  </div>
-
-                  {/* Course Body */}
-                  <div className="p-6">
-                    <p className="text-gray-200 mb-6 leading-relaxed">
-                      {course.description}
-                    </p>
-
-                    {/* Course Status */}
-                    <div className="mb-6">
-                      {unlocked ? (
-                        <div className="flex items-center justify-center py-3 px-4 bg-[#9BE9FD]/15 rounded-xl border border-[#9BE9FD]/30">
-                          <Unlock className="w-5 h-5 text-[#9BE9FD] mr-2" />
-                          <span className="text-[#9BE9FD] font-semibold">Course Unlocked!</span>
-                        </div>
-                      ) : (
-                        <div className="text-center">
-                          <div className="flex items-center justify-between mb-3">
-                            <span className="text-sm font-medium text-gray-300">
-                              {isFree ? 'Free Course' : 'Unlock Cost'}
-                            </span>
-                            <span className="text-lg font-bold text-[#9BE9FD]">
-                              {isFree ? 'FREE' : `${course.pointsRequired} pts`}
-                            </span>
-                          </div>
-                          
-                          {!canAfford && !isFree && (
-                            <div className="text-xs text-red-300 mb-3">
-                              Need {course.pointsRequired - userPoints} more points
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Action Button */}
-                    {unlocked ? (
-                      <button className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r ${course.gradient} text-white hover:shadow-lg hover:scale-105`}>
-                        Start Learning
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleUnlockCourse(course)}
-                        disabled={!canAfford}
-                        className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${
-                          canAfford
-                            ? `bg-[#9BE9FD] text-[#002732] hover:shadow-lg hover:scale-105 transform active:scale-95`
-                            : 'bg-[#C4C4C4]/50 text-white/50 cursor-not-allowed'
-                        }`}
-                      >
-                        {isFree ? 'Unlock Free Course' : `Unlock for ${course.pointsRequired} Points`}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            <div className="text-sm text-gray-400 text-center">Keep learning to conquer more challenges!</div>
+            
           </div>
         </div>
+
+        {/* Courses Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courses.map((course) => {
+            const unlocked = isUnlocked(course.id);
+            const canAfford = canUnlock(course.pointsRequired);
+            const isFree = course.pointsRequired === 0;
+
+            return (
+              <div
+                key={course.id}
+                className={`bg-[#1E3A47] rounded-2xl p-6 border border-[#2A4A57] transition-all duration-300 hover:shadow-xl hover:border-[#9AE9FD]/50 ${
+                  unlocked ? 'ring-2 ring-[#9AE9FD]/60' : canAfford ? 'hover:scale-105 hover:shadow-[#9AE9FD]/20' : 'opacity-75'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    {course.icon}
+                    <span className="text-sm font-semibold text-white">{course.level}</span>
+                  </div>
+                  {unlocked ? (
+                    <div className="bg-[#9AE9FD]/20 rounded-full p-2">
+                      <Unlock className="w-5 h-5 text-[#9AE9FD]" />
+                    </div>
+                  ) : (
+                    <Lock className="w-6 h-6 text-gray-400" />
+                  )}
+                </div>
+                <h3 className="text-xl font-bold text-[#9AE9FD] mb-2">{course.title}</h3>
+                <p className="text-sm text-gray-400 mb-4">{course.duration}</p>
+                <p className="text-gray-200 mb-6">{course.description}</p>
+                {unlocked ? (
+                  <div className="flex items-center justify-center py-2 px-4 bg-[#9AE9FD]/15 rounded-xl border border-[#9AE9FD]/30 mb-4">
+                    <Unlock className="w-5 h-5 text-[#9AE9FD] mr-2" />
+                    <span className="text-[#9AE9FD] font-semibold">Course Unlocked!</span>
+                  </div>
+                ) : (
+                  <div className="text-center mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-300">
+                        {isFree ? 'Free Course' : 'Unlock Cost'}
+                      </span>
+                      <span className="text-lg font-bold text-[#9AE9FD]">
+                        {isFree ? 'FREE' : `${course.pointsRequired} pts`}
+                      </span>
+                    </div>
+                    {!canAfford && !isFree && (
+                      <div className="text-xs text-red-400">
+                        Need {course.pointsRequired - userPoints} more points
+                      </div>
+                    )}
+                  </div>
+                )}
+                <button
+                  onClick={() => unlocked ? null : handleUnlockCourse(course)}
+                  className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${
+                    unlocked
+                      ? `bg-gradient-to-r ${course.gradient} text-white hover:shadow-lg hover:scale-105`
+                      : canAfford
+                      ? 'bg-[#9AE9FD] text-[#002732] hover:shadow-lg hover:scale-105 transform active:scale-95'
+                      : 'bg-gray-600 text-white/50 cursor-not-allowed'
+                  }`}
+                >
+                  {unlocked ? 'Start Learning' : isFree ? 'Unlock Free Course' : `Unlock for ${course.pointsRequired} Points`}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
+        
       </div>
     </div>
   );
