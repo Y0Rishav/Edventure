@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 
 // Changed: Imported NavLink for active link styling
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, redirect, useNavigate } from 'react-router-dom';
 import { BackgroundDecoration, EdventureLogo } from '../assets/icons.jsx';
 import Contact from './Contact.jsx';
 import Help from './Help.jsx';
@@ -12,6 +12,7 @@ const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null); // null = loading, false = logged out, true = logged in
   const navigate = useNavigate()
+  const toggleMenu = () => setMenuOpen(!menuOpen);
   
   // Check session on mount
   useEffect(() => {
