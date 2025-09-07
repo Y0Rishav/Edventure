@@ -56,7 +56,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false, // Changed to false for better security
   cookie: {
-    secure: process.env.NODE_ENV === 'production' || process.env.FORCE_HTTPS === 'true', // More flexible secure setting
+    secure: process.env.NODE_ENV === 'production', // Only secure in production (HTTPS)
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
     httpOnly: true // Prevent XSS attacks

@@ -8,12 +8,13 @@ const router = express.Router();
 
 // Passport config
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://edventure-gtcs.onrender.com' 
+    : 'http://localhost:5000';
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.NODE_ENV === 'production' 
-      ? 'https://edventure-gtcs.onrender.com/auth/google/callback'
-      : '/auth/google/callback'
+    callbackURL: `${baseUrl}/auth/google/callback`
   }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ googleId: profile.id });
