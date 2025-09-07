@@ -110,19 +110,6 @@ router.post('/update_profile', async (req, res) => {
   }
 });
 
-router.post('/add_note', async (req, res) => {
-  if (!req.user) return res.status(401).send('Unauthorized');
-  const { videoId, timestamp, content } = req.body;
-  try {
-    const user = await User.findById(req.user._id);
-    user.notes.push({ videoId, timestamp: timestamp || Date.now(), content });
-    await user.save();
-    res.send('Note added');
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 router.post('/update_points', async (req, res) => {
   if (!req.user) return res.status(401).send('Unauthorized');
   const { points, badge } = req.body;
@@ -150,24 +137,6 @@ router.get('/leaderboard', async (req, res) => {
     }
 
     res.json({ top, rank });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/update_progress', async (req, res) => {
-  if (!req.user) return res.status(401).send('Unauthorized');
-  const { subject, chapter, completed } = req.body;
-  try {
-    const user = await User.findById(req.user._id);
-    const existingProgress = user.progress.find(p => p.subject === subject && p.chapter === chapter);
-    if (existingProgress) {
-      existingProgress.completed = completed;
-    } else {
-      user.progress.push({ subject, chapter, completed });
-    }
-    await user.save();
-    res.send('Progress updated');
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

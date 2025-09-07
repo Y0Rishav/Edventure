@@ -1,9 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import Courses from './components/Courses';
-import CourseDetail from './components/CourseDetail';
-import ChapterViewer from './components/ChapterViewer';
 import Leaderboard from './components/Leaderboard';
 // import Battlegrounds from './components/Battlegrounds';
 import BattlegroundsLobby from './components/BattlegroundsLobby';
@@ -27,9 +24,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/course/:id" element={<CourseDetail />} />
-        <Route path="/chapter/:id" element={<ChapterViewer />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         {/* <Route path="/battlegrounds" element={<Battlegrounds />} /> */}
         <Route path="/battlegrounds/lobby" element={<BattlegroundsLobby />} />

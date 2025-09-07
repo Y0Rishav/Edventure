@@ -13,8 +13,6 @@ const userSchema = new mongoose.Schema({
   points: { type: Number, default: 0 },
   test: [String],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  notes: [{ videoId: String, timestamp: Number, content: String }],
-  progress: [{ subject: String, chapter: String, completed: Boolean }],
   createdAt: { type: Date, default: Date.now }
 });
 

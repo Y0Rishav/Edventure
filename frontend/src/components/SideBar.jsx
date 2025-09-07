@@ -72,10 +72,6 @@ function Sidebar({onLogout}) {
           <HomeIcon />
           <span>Dashboard</span>
         </Link>
-        <Link to="/courses" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <BookIcon />
-          <span>Subjects</span>
-        </Link>
         <Link to="/friends" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
           <UsersIcon />
           <span>Your Squad</span>

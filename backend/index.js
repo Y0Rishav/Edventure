@@ -9,9 +9,6 @@ const passport = require('passport');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const authRoutes = require('./routes/auth');
-const courseRoutes = require('./routes/courses');
-const chapterRoutes = require('./routes/chapters');
-const videoRoutes = require('./routes/videos');
 const battlegroundsRoutes = require('./routes/battlegrounds');
 const friendsRoutes = require('./routes/friends');
 const chatbotRoutes = require('./routes/chatbot');
@@ -54,9 +51,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use('/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
-app.use('/api/chapters', chapterRoutes);
-app.use('/api', videoRoutes);
 app.use('/api', battlegroundsRoutes);
 app.use('/api/friends', friendsRoutes);
 app.use('/api/chatbot', chatbotRoutes);

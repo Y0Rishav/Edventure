@@ -181,7 +181,7 @@ function Dashboard() {
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-[#002732] font-semibold">Chapters completed</span>
+                    <span className="text-[#002732] font-semibold">Quizzes completed</span>
                     <span className="text-[#002732] text-sm">(433)</span>
                   </div>
                   <div className="w-full bg-white rounded-full h-3">
