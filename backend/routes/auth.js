@@ -96,7 +96,13 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/current_user', (req, res) => {
-  res.send(req.user);
+  console.log('Current user request - Session ID:', req.sessionID);
+  console.log('Current user request - User:', req.user ? req.user._id : 'No user');
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    res.status(401).json({ error: 'Not authenticated' });
+  }
 });
 
 router.post('/update_profile', async (req, res) => {

@@ -28,7 +28,11 @@ function Friends() {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
       setUser(res.data);
     } catch (err) {
-      console.log(err);
+      console.log('Authentication failed:', err);
+      // Redirect to login if not authenticated
+      if (err.response?.status === 401) {
+        window.location.href = '/login';
+      }
     }
   };
 

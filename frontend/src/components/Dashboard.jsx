@@ -47,8 +47,13 @@ function Dashboard() {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
       setUser(res.data);
     } catch (err) {
-      console.log(err);
-      setError('Failed to load user data. Please log in again.');
+      console.log('Authentication failed:', err);
+      if (err.response?.status === 401) {
+        // Redirect to login if not authenticated
+        window.location.href = '/login';
+      } else {
+        setError('Failed to load user data. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
