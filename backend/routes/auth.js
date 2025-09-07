@@ -51,7 +51,7 @@ passport.deserializeUser(async (id, done) => {
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-  res.redirect('http://localhost:5173/dashboard');
+  res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
 });
 
 // Logout (GET) - used by browser redirects

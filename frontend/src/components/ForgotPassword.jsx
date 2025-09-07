@@ -14,7 +14,7 @@ function ForgotPassword() {
     // Add your OTP sending logic here
     
     try {
-        const response=await axios('http://localhost:5000/sendotp',{
+        const response=await axios(`${import.meta.env.VITE_BACKEND_URL}/sendotp`,{
             email:email,
         });
         navigate('/resetPassword')

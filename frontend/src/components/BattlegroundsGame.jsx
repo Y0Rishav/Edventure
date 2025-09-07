@@ -919,7 +919,7 @@ function BattlegroundsGame() {
     
     const fetchData = async () => {
       try {
-        const userRes = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+        const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
         setUser(userRes.data);
         console.log('👤 User loaded in game:', userRes.data.username);
 
@@ -942,7 +942,7 @@ function BattlegroundsGame() {
             await loadPracticeQuestions();
           } else {
             // Regular single player - generate new questions
-            const questionsRes = await axios.get(`http://localhost:5000/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
+            const questionsRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
             const questionsData = questionsRes.data;
             const gameQuestions = questionsData.questions.slice(0, 10);
             setQuestions(gameQuestions);
@@ -1096,7 +1096,7 @@ function BattlegroundsGame() {
         if (user) {
           const playerScore = normalized.player1.username === user.username ? Number(normalized.player1.score ?? normalized.player1.points ?? 0) : Number(normalized.player2.score ?? normalized.player2.points ?? 0);
           if (!isNaN(playerScore)) {
-            await axios.post('http://localhost:5000/auth/update_points', {
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/update_points`, {
               points: playerScore
             }, { withCredentials: true });
             console.log('💰 Updated user points after multiplayer game:', playerScore);
@@ -1135,18 +1135,18 @@ function BattlegroundsGame() {
       if (isMultiplayer && gameId) {
         try {
           console.log('🔍 Trying to get stored questions for game:', gameId);
-          const storedResponse = await axios.get(`http://localhost:5000/api/battlegrounds-questions/game/${gameId}`);
+          const storedResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/game/${gameId}`);
           questionsData = storedResponse.data;
           console.log('✅ Loaded stored questions for game');
         } catch (storedError) {
           console.log('📝 Stored questions not found, generating new ones...');
-          const generateResponse = await axios.get(`http://localhost:5000/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}&gameId=${gameId}`);
+          const generateResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}&gameId=${gameId}`);
           questionsData = generateResponse.data;
           console.log('✅ Generated new questions for game');
         }
       } else {
         console.log('🔍 Generating questions for single player');
-        const generateResponse = await axios.get(`http://localhost:5000/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
+        const generateResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/filter?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
         questionsData = generateResponse.data;
         console.log('✅ Generated questions for single player');
       }
@@ -1182,7 +1182,7 @@ function BattlegroundsGame() {
   const loadPracticeQuestions = async () => {
     console.log('📚 Loading practice questions with params:', { subject, difficulty, classLevel });
     try {
-      const response = await axios.get(`http://localhost:5000/api/battlegrounds-questions/practice?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/practice?subject=${subject}&difficulty=${difficulty}&class=${classLevel}`);
       const practiceData = response.data;
 
       if (practiceData.questions && practiceData.questions.length > 0) {
@@ -1314,7 +1314,7 @@ function BattlegroundsGame() {
     if (isMultiplayer && socket) {
       if (gameId && questions.length > 0 && mode !== 'practice') {
         try {
-          await axios.post('http://localhost:5000/api/battlegrounds-questions/save-practice', {
+          await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/save-practice`, {
             gameId,
             subject,
             difficulty,
@@ -1333,7 +1333,7 @@ function BattlegroundsGame() {
 
       if (questions.length > 0 && mode !== 'practice') {
         try {
-          await axios.post('http://localhost:5000/api/battlegrounds-questions/save-practice', {
+          await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/battlegrounds-questions/save-practice`, {
             gameId: `single_${Date.now()}`,
             subject,
             difficulty,
@@ -1347,7 +1347,7 @@ function BattlegroundsGame() {
       }
 
       try {
-        await axios.post('http://localhost:5000/auth/update_points', {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/update_points`, {
           points: finalPoints,
           badge: finalPoints > 200 ? 'Battle Champion' : null
         }, { withCredentials: true });

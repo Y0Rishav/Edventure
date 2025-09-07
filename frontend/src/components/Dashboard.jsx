@@ -44,7 +44,7 @@ function Dashboard() {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
       setUser(res.data);
     } catch (err) {
       console.log(err);
@@ -56,7 +56,7 @@ function Dashboard() {
 
   const fetchFriends = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/friends', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/friends`, { withCredentials: true });
       setFriends(res.data || []);
     } catch (err) {
       console.error('Failed to load friends', err);
@@ -65,7 +65,7 @@ function Dashboard() {
 
   const fetchLeaderboard = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/auth/leaderboard', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/leaderboard`, { withCredentials: true });
       setLeaderboard(res.data || { top: [], rank: null });
     } catch (err) {
       console.error('Failed to load leaderboard', err);
@@ -90,7 +90,7 @@ function Dashboard() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
     } catch (err) {
       console.error('Logout failed', err);
     } finally {

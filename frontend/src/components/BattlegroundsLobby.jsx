@@ -987,7 +987,7 @@ function BattlegroundsLobby() {
   // Logout handler for sidebar
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed', err);
@@ -1009,7 +1009,7 @@ function BattlegroundsLobby() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
         setUser(res.data);
         console.log('👤 User loaded:', res.data.username);
         if (res.data.class) {

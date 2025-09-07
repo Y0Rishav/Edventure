@@ -15,7 +15,7 @@ function Leaderboard() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed', err);
@@ -24,7 +24,7 @@ function Leaderboard() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:5000/auth/leaderboard')
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/leaderboard`)
       .then(res => {
         const data = res.data;
         if (Array.isArray(data)) {

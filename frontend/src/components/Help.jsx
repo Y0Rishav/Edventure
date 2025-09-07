@@ -39,7 +39,7 @@ const Help = () => {
   };
     const handleLogout = async () => {
       try {
-        await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
         window.location.href = '/';
       } catch (err) {
         console.error('Logout failed', err);

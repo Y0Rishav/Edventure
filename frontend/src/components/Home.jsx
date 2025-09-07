@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 
 // Changed: Imported NavLink for active link styling
-import { Link, NavLink, redirect, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { BackgroundDecoration, EdventureLogo } from '../assets/icons.jsx';
 import Contact from './Contact.jsx';
 import Help from './Help.jsx';
@@ -12,14 +12,13 @@ const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null); // null = loading, false = logged out, true = logged in
   const navigate = useNavigate()
-  const toggleMenu = () => setMenuOpen(!menuOpen);
   
   // Check session on mount
   useEffect(() => {
     let mounted = true;
     const check = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
         if (!mounted) return;
         setIsLoggedIn(!!res.data);
       } catch (err) {
@@ -35,7 +34,7 @@ const Home = () => {
     // If we haven't determined login state yet, fetch once more
     if (isLoggedIn === null) {
       try {
-        const res = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
         if (res && res.data) {
           setIsLoggedIn(true);
           navigate('/dashboard');

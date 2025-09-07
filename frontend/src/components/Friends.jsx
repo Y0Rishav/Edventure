@@ -11,7 +11,7 @@ function Friends() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed', err);
@@ -25,7 +25,7 @@ function Friends() {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/auth/current_user', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
       setUser(res.data);
     } catch (err) {
       console.log(err);
@@ -34,7 +34,7 @@ function Friends() {
 
   const fetchFriends = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/friends', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/friends`, { withCredentials: true });
       setFriends(res.data);
     } catch (err) {
       console.log(err);
@@ -46,7 +46,7 @@ function Friends() {
 
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/friends/search?q=${encodeURIComponent(searchTerm)}`, { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/friends/search?q=${encodeURIComponent(searchTerm)}`, { withCredentials: true });
       setSearchResults(res.data);
     } catch (err) {
       console.log(err);
@@ -57,7 +57,7 @@ function Friends() {
 
   const addFriend = async (friendId) => {
     try {
-      await axios.post(`http://localhost:5000/api/friends/add/${friendId}`, {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/friends/add/${friendId}`, {}, { withCredentials: true });
       fetchFriends();
       setSearchResults(searchResults.filter(user => user._id !== friendId));
     } catch (err) {
@@ -67,7 +67,7 @@ function Friends() {
 
   const removeFriend = async (friendId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/friends/remove/${friendId}`, { withCredentials: true });
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/friends/remove/${friendId}`, { withCredentials: true });
       fetchFriends();
     } catch (err) {
       console.log(err);

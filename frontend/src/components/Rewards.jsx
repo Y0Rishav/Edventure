@@ -36,7 +36,7 @@ function Rewards() {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
@@ -47,7 +47,7 @@ function Rewards() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios("http://localhost:5000/auth/current_user", {
+        const response = await axios(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, {
           withCredentials: true
         });
         const data = response.data;
@@ -147,7 +147,7 @@ function Rewards() {
     if (canUnlock(course.pointsRequired) && !isUnlocked(course.id)) {
       try {
         const newPoints = userPoints - course.pointsRequired;
-        const response = await axios.post('http://localhost:5000/auth/unlock-course', 
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/unlock-course`, 
           { 
             newPoints: newPoints,
             courseId: course.id 

@@ -21,9 +21,8 @@ const userSchema = new mongoose.Schema({
   //for avatar customization
   avatar:{
     type:String,
-    default:'https://th.bing.com/th?id=ORMS.ed048131bfcbae2933327f4318b54a71&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0'
+    default:'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23e0e0e0"/><circle cx="32" cy="24" r="14" fill="%23bdbdbd"/><ellipse cx="32" cy="48" rx="20" ry="12" fill="%23bdbdbd"/></svg>'
   },
-
 
   test: [String],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

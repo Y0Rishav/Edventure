@@ -75,7 +75,7 @@ const Chatbot = () => {
     setIsTyping(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/chatbot', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/chatbot`, {
         history: newMessages,
         user_name: userName
       });

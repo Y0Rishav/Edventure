@@ -24,7 +24,7 @@ function Profile() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed', err);
@@ -34,7 +34,7 @@ function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios('http://localhost:5000/auth/current_user', { withCredentials: true });
+        const response = await axios(`${import.meta.env.VITE_BACKEND_URL}/auth/current_user`, { withCredentials: true });
         const data = response.data;
         
         if (data) {
@@ -65,7 +65,7 @@ function Profile() {
     setShowAvatarList(false);
 
     try {
-      await axios.post('http://localhost:5000/auth/update-avatar', 
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/update-avatar`, 
         { avatarUrl: newAvatarUrl },
         { withCredentials: true }
       );
@@ -82,7 +82,7 @@ function Profile() {
   const handleUpdateProfile = async () => {
     setUpdating(true);
     try {
-      const response = await axios.post('http://localhost:5000/auth/update_profile', 
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/update_profile`, 
         {
           username: formData.username,
           age: formData.age,
