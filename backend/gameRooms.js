@@ -43,26 +43,39 @@ module.exports = function registerGameHandlers(io, generateQuestions, User) {
     }
   }
 
-  // Socket.IO authentication middleware (kept here so sockets used by games are checked)
-  io.use((socket, next) => {
-    const sessionId = socket.handshake.headers.cookie?.split(';')
-      .find(c => c.trim().startsWith('connect.sid='))
-      ?.split('=')[1];
+  // Socket.IO authentication middleware (removed - now authenticate per event)
+  // io.use((socket, next) => {
+  //   const sessionId = socket.handshake.headers.cookie?.split(';')
+  //     .find(c => c.trim().startsWith('connect.sid='))
+  //     ?.split('=')[1];
 
-    if (!sessionId) {
-      console.log('❌ No session found for socket connection');
-      return next(new Error('Authentication error'));
-    }
+  //   if (!sessionId) {
+  //     console.log('❌ No session found for socket connection');
+  //     return next(new Error('Authentication error'));
+  //   }
 
-    console.log('🔐 Socket authenticated with session:', sessionId.substring(0, 10) + '...');
-    next();
-  });
+  //   console.log('🔐 Socket authenticated with session:', sessionId.substring(0, 10) + '...');
+  //   next();
+  // });
 
   io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     // Join battlegrounds lobby
     socket.on('join-lobby', async (data) => {
+      // Authenticate user before allowing battlegrounds access
+      const sessionId = socket.handshake.headers.cookie?.split(';')
+        .find(c => c.trim().startsWith('connect.sid='))
+        ?.split('=')[1];
+
+      if (!sessionId) {
+        console.log('❌ No session found for battlegrounds access');
+        socket.emit('auth-error', { message: 'Authentication required for battlegrounds' });
+        return;
+      }
+
+      console.log('🔐 Socket authenticated for battlegrounds with session:', sessionId.substring(0, 10) + '...');
+
       console.log('🎯 Player joining lobby:', data);
       const { userId, username, subject, difficulty, classLevel, mode } = data;
       socket.userData = { userId, username, subject, difficulty, classLevel, mode };
@@ -140,6 +153,13 @@ module.exports = function registerGameHandlers(io, generateQuestions, User) {
 
     // Handle player answer
     socket.on('submit-answer', (data) => {
+      // Check if user is authenticated (has userData from join-lobby)
+      if (!socket.userData) {
+        console.log('❌ Unauthenticated user trying to submit answer');
+        socket.emit('auth-error', { message: 'Authentication required' });
+        return;
+      }
+
       const { gameId, questionIndex, answerIndex, timeLeft } = data;
       console.log(`📝 Player ${socket.userData.username} submitted answer for question ${questionIndex}:`, answerIndex);
 
@@ -206,6 +226,13 @@ module.exports = function registerGameHandlers(io, generateQuestions, User) {
 
     // Handle game completion
     socket.on('game-complete', (data) => {
+      // Check if user is authenticated
+      if (!socket.userData) {
+        console.log('❌ Unauthenticated user trying to complete game');
+        socket.emit('auth-error', { message: 'Authentication required' });
+        return;
+      }
+
       const { gameId } = data;
       const game = gameRooms.get(gameId);
       
