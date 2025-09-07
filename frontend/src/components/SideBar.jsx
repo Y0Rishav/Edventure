@@ -20,8 +20,14 @@ const UsersIcon = () => (
 
 const SwordIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M14.5 17.5L3 6L6 3L17.5 14.5L14.5 17.5Z" stroke="currentColor" strokeWidth="2" fill="none"/>
-    <path d="M13 19L19 13L21 15L15 21L13 19Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+    <rect x="4" y="8" width="16" height="8" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+    <circle cx="8" cy="10" r="1" stroke="currentColor" strokeWidth="2"/>
+    <circle cx="12" cy="10" r="1" stroke="currentColor" strokeWidth="2"/>
+    <circle cx="16" cy="10" r="1" stroke="currentColor" strokeWidth="2"/>
+    <circle cx="8" cy="14" r="1" stroke="currentColor" strokeWidth="2"/>
+    <circle cx="16" cy="14" r="1" stroke="currentColor" strokeWidth="2"/>
+    <path d="M6 12H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M14 12H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
   </svg>
 );
 
@@ -32,6 +38,16 @@ const TrophyIcon = () => (
     <path d="M6 12H18V3H6V12Z" stroke="currentColor" strokeWidth="2" fill="none"/>
     <path d="M12 12V21" stroke="currentColor" strokeWidth="2"/>
     <path d="M9 21H15" stroke="currentColor" strokeWidth="2"/>
+  </svg>
+);
+
+const LeaderboardIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 4H8C6.89543 4 6 4.89543 6 6V20C6 21.1046 6.89543 22 8 22H16C17.1046 22 18 21.1046 18 20V6C18 4.89543 17.1046 4 16 4Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+    <path d="M12 2V4" stroke="currentColor" strokeWidth="2"/>
+    <path d="M9 8H15" stroke="currentColor" strokeWidth="2"/>
+    <path d="M9 12H15" stroke="currentColor" strokeWidth="2"/>
+    <path d="M9 16H13" stroke="currentColor" strokeWidth="2"/>
   </svg>
 );
 
@@ -83,6 +99,10 @@ function Sidebar({onLogout}) {
         <Link to="/rewards" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
           <TrophyIcon />
           <span>Rewards</span>
+        </Link>
+        <Link to="/leaderboard" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+          <LeaderboardIcon />
+          <span>Leaderboard</span>
         </Link>
         
         <div className="border-t border-[#6BA3B1] my-6"></div>

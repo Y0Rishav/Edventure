@@ -47,9 +47,7 @@ function Contact() {
   const members = teamMembers.filter(member => member.role !== 'Team Leader');
 
   return (
-    <div className="flex min-h-screen">
-      <SideBar />
-  <main className="flex-1 min-h-screen w-full flex flex-col ml-64" style={{ background: 'linear-gradient(180deg, #051418 0%, #103E4C 100%)' }}>
+    <div className="min-h-screen w-full flex flex-col" style={{ backgroundColor: '#0A1F2B' }}>
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
           <div className="flex flex-col items-center pt-16 sm:pt-20 lg:pt-24 pb-16">
 
@@ -91,9 +89,6 @@ function Contact() {
             
           </div>
         </div>
-        
-       
-      </main>
     </div>
   );
 }

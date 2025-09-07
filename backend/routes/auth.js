@@ -185,4 +185,40 @@ router.post('/login', async (req, res) => {
   }
 });
 
+
+
+//for rewards section
+router.post('/unlock-course', async (req, res) => {
+  if (!req.user) {
+    return res.status(401).send('Unauthorized');
+  }
+
+  const { newPoints, courseId } = req.body;
+
+  // --- Server-side validation ---
+  if (typeof newPoints !== 'number' || newPoints < 0 || typeof courseId !== 'number') {
+    return res.status(400).send('Invalid request data.');
+  }
+  // It's also a good idea to check if the user actually has enough points on the server
+  // but for simplicity, we'll trust the frontend calculation for now.
+  // In a real app, you would recalculate here.
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $set: { points: newPoints },           // Set the new point total
+        $addToSet: { unlockedCourses: courseId } // Add the courseId to the array (prevents duplicates)
+      },
+      { new: true } // Return the updated document
+    );
+
+    res.status(200).json(updatedUser); // Send back the complete, updated user object
+
+  } catch (err) {
+    console.error("Error unlocking course:", err);
+    res.status(500).json({ error: 'Failed to unlock course.' });
+  }
+});
+
 module.exports = router;

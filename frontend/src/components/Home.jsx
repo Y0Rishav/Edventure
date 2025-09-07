@@ -5,6 +5,8 @@ import axios from 'axios';
 // Changed: Imported NavLink for active link styling
 import { Link, NavLink, redirect, useNavigate } from 'react-router-dom';
 import { QuillHamburgerIcon, BackgroundDecoration, EdventureLogo } from '../assets/icons.jsx';
+import Contact from './Contact.jsx';
+import Help from './Help.jsx';
 
 const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,7 +56,7 @@ const Home = () => {
         <meta name="description" content="Join Edventure, your one-stop solution for quiz battles, performance analysis, and lectures." />
       </Helmet>
 
-      <main className="w-full min-h-screen" style={{ backgroundColor: '#00222B' }}>
+      <main className="w-full" id="home" style={{ backgroundColor: '#00222B' }}>
         <div className="w-full h-screen shadow-[0px_0px_100px_rgba(154,233,253,0.3)] overflow-hidden" 
              style={{ backgroundColor: '#00222B', border: '2px solid #1A3636' }}>
           <div className="relative flex flex-col items-center w-full px-8 md:px-16 py-8 h-full">
@@ -69,31 +71,25 @@ const Home = () => {
 
               {/* --- NAVIGATION CHANGES START HERE --- */}
               <nav className="hidden lg:flex items-center gap-12 text-xl font-semibold">
-                <NavLink 
-                  to="/" 
-                  className={({ isActive }) =>
-                    `transition-colors hover:text-sky-300 ${isActive ? 'text-sky-300' : 'text-white'}`
-                  }
+                <a 
+                  href="#home" 
+                  className="transition-colors hover:text-sky-300 text-white"
                 >
                   Home
-                </NavLink>
+                </a>
                 {/* Changed: Replaced <a> tag with NavLink */}
-                <NavLink 
-                  to="/contact" 
-                  className={({ isActive }) =>
-                    `transition-colors hover:text-sky-300 ${isActive ? 'text-sky-300' : 'text-white'}`
-                  }
+                <a 
+                  href="#contact" 
+                  className="transition-colors hover:text-sky-300 text-white"
                 >
                   About Us
-                </NavLink>
-                <NavLink 
-                  to="/help" 
-                  className={({ isActive }) =>
-                    `transition-colors hover:text-sky-300 ${isActive ? 'text-sky-300' : 'text-white'}`
-                  }
+                </a>
+                <a 
+                  href="#help" 
+                  className="transition-colors hover:text-sky-300 text-white"
                 >
                   Help
-                </NavLink>
+                </a>
               </nav>
               {/* --- NAVIGATION CHANGES END HERE --- */}
 
@@ -141,6 +137,14 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        <section id="contact">
+          <Contact />
+        </section>
+
+        <section id="help">
+          <Help />
+        </section>
       </main>
     </>
   );

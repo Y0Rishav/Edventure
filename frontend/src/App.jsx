@@ -14,6 +14,7 @@ import Contact from './components/Contact';
 import Help from './components/Help';
 import Details from './components/Details';
 import Profile from './components/Profile';
+import Rewards from './components/Rewards';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
 
         <Route path="/details"element={<Details />} />
         <Route path="/profile"element={<Profile />} />
+        <Route path="/rewards"element={<Rewards />} />
       </Routes>
       <Chatbot />
     </Router>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import SideBar from './SideBar'; // Import the SideBar component
 
 // --- SVG Icon Components ---
@@ -88,9 +89,7 @@ const Help = () => {
   ];
 
   return (
-    <div className="flex min-h-screen">
-      <SideBar onLogout={handleLogout}/>
-  <main className="flex-1 min-h-screen w-full ml-64 bg-[#0A1F2B]" >
+    <div className="min-h-screen w-full bg-[#0A1F2B]">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center pt-16 sm:pt-20 lg:pt-24 pb-8">
             
@@ -198,7 +197,6 @@ const Help = () => {
             </div>
           </div>
         </div>
-      </main>
     </div>
   );
 };

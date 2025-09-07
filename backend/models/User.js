@@ -11,6 +11,14 @@ const userSchema = new mongoose.Schema({
   subjects: [String],
   profilePicture: String,
   points: { type: Number, default: 0 },
+
+  //for rewards section
+  unlockedCourses: {
+    type: [Number], // Defines an array of numbers
+    default: [1]    // Course with ID 1 is unlocked by default
+  },
+
+  
   test: [String],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now }
