@@ -73,10 +73,20 @@ const LogoutIcon = () => (
   </svg>
 );
 
+const PdfIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+    <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2"/>
+    <path d="M16 13H8" stroke="currentColor" strokeWidth="2"/>
+    <path d="M16 17H8" stroke="currentColor" strokeWidth="2"/>
+    <path d="M10 9H8" stroke="currentColor" strokeWidth="2"/>
+  </svg>
+);
+
 function Sidebar({onLogout}) {
     
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-[#7FB3C1] p-6">
+    <div className="fixed left-0 top-0 h-full w-64 bg-[#7FB3C1] p-6 z-50">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#002732] mb-2">Edventure</h1>
       </div>
@@ -103,6 +113,10 @@ function Sidebar({onLogout}) {
         <Link to="/leaderboard" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
           <LeaderboardIcon />
           <span>Leaderboard</span>
+        </Link>
+        <Link to="/pdf-quiz" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+          <PdfIcon />
+          <span>PDF to Quiz</span>
         </Link>
         
         <div className="border-t border-[#6BA3B1] my-6"></div>

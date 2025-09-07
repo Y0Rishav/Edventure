@@ -848,6 +848,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSocket } from '../contexts/SocketContext';
+import Sidebar from './SideBar';
 
 // Icon Components
 const SwordIcon = () => (
@@ -982,6 +983,16 @@ function BattlegroundsLobby() {
     { value: 'practice', label: 'Practice', description: 'Practice without competing', icon: <EditIcon /> },
     { value: 'solo', label: '1 v 1', description: 'Compete against Real Players', icon: <UserIcon /> }
   ];
+
+  // Logout handler for sidebar
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true });
+      window.location.href = '/';
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
+  };
 
   const handleClassSlideNext = () => {
     if (classSlideIndex < maxSlideIndex) {
@@ -1124,7 +1135,10 @@ function BattlegroundsLobby() {
 
   if (!user) return (
     <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="text-[#9AE9FD] text-xl">Loading...</div>
+      <div className="relative z-50">
+        <Sidebar onLogout={handleLogout} />
+      </div>
+      <div className="text-[#9AE9FD] text-xl ml-64">Loading...</div>
     </div>
   );
 
@@ -1133,8 +1147,12 @@ function BattlegroundsLobby() {
       className="min-h-screen bg-black text-white relative overflow-hidden"
       style={{ fontFamily: "Inter, sans-serif" }}
     >
+      <div className="relative z-50">
+        <Sidebar onLogout={handleLogout} />
+      </div>
+
       {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full">
+      <div className="absolute top-0 left-0 w-full h-full z-10">
         <div className="absolute top-[10%] left-[15%] w-32 h-32 border-2 border-[#9AE9FD]/20 rounded-full"></div>
         <div className="absolute top-[60%] right-[10%] w-24 h-24 border-2 border-[#9AE9FD]/20 rounded-full"></div>
         <div className="absolute bottom-[20%] left-[8%] w-40 h-40 border-2 border-[#9AE9FD]/20 rounded-full"></div>
@@ -1142,7 +1160,7 @@ function BattlegroundsLobby() {
         <div className="absolute bottom-[40%] left-[40%] w-20 h-20 bg-[#144F5F]/30 rounded-full blur-xl"></div>
       </div>
 
-      <div className="relative z-10 p-6">
+      <div className="relative z-20 ml-64 p-6">
         {/* Header */}
         <div className="max-w-5xl mx-auto mb-12">
           <div className="bg-[#001318] border border-[#9AE9FD]/30 rounded-3xl p-8 text-center relative overflow-hidden">

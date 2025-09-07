@@ -18,7 +18,13 @@ const userSchema = new mongoose.Schema({
     default: [1]    // Course with ID 1 is unlocked by default
   },
 
-  
+  //for avatar customization
+  avatar:{
+    type:String,
+    default:'https://th.bing.com/th?id=ORMS.ed048131bfcbae2933327f4318b54a71&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0'
+  },
+
+
   test: [String],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now }

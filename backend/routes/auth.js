@@ -221,4 +221,37 @@ router.post('/unlock-course', async (req, res) => {
   }
 });
 
+
+//for updating profile picture/avatar
+router.post('/update-avatar', async (req, res) => {
+  // 1. Check if user is authenticated
+  if (!req.user) {
+    return res.status(401).send('Unauthorized');
+  }
+
+  // 2. Get the avatarUrl from the request body
+  const { avatarUrl } = req.body;
+
+  // 3. Validate the input
+  if (!avatarUrl || typeof avatarUrl !== 'string') {
+    return res.status(400).send('Invalid avatar URL provided.');
+  }
+
+  try {
+    // 4. Find the user by their ID and update the avatar field
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: { avatar: avatarUrl } }, // Use $set to update the avatar field
+      { new: true } // This option returns the modified document
+    );
+
+    // 5. Send back the updated user object
+    res.status(200).json(updatedUser);
+
+  } catch (err) {
+    console.error("Error updating avatar:", err);
+    res.status(500).json({ error: 'A server error occurred while updating the avatar.' });
+  }
+});
+
 module.exports = router;
