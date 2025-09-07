@@ -71,7 +71,7 @@ function Login() {
       style={{ fontFamily: "Inter, sans-serif" }}
     >
       {/* Background decorative circles */}
-      <div className="absolute top-0 left-0 w-full h-full">
+      <div className="absolute top-0 left-0 w-full h-full hidden sm:block">
         <div className="absolute top-[18%] left-[calc(50%+170px)] w-[132px] h-[132px] border-2 border-[#9BE9FD]/80 rounded-full opacity-30"></div>
         <div className="absolute top-[45%] left-[calc(50%-350px)] w-[132px] h-[132px] border-2 border-[#9BE9FD]/80 rounded-full opacity-30"></div>
         <div className="absolute bottom-[12%] left-[calc(50%+200px)] w-[132px] h-[132px] border-2 border-[#9BE9FD]/80 rounded-full opacity-30"></div>
@@ -80,7 +80,7 @@ function Login() {
       <div className="flex flex-col items-center z-10">
         {/* Top Navigation */}
         <div className="flex items-center justify-center p-1.5 rounded-full bg-[#002732] border border-gray-700 mb-8">
-          <button className="px-10 py-2.5 text-lg font-bold text-white bg-[#144F5F] rounded-l-full rounded-r-full">
+          <button className="px-6 sm:px-10 py-2.5 text-base sm:text-lg font-bold text-white bg-[#144F5F] rounded-l-full rounded-r-full">
             Login   |   Register
           </button>
           
@@ -88,23 +88,23 @@ function Login() {
 
         {/* Login Form Container */}
         <div className="relative">
-          <div className="absolute -top-1 -left-4 w-[480px] h-[550px] bg-white/90 rounded-[50px]"></div>
+          <div className="absolute -top-1 -left-4 w-full sm:w-[480px] h-auto sm:h-[550px] bg-white/90 rounded-[50px]"></div>
           
-          <div className="relative w-[480px] h-[550px] bg-[#001318] rounded-[50px] p-10 flex flex-col justify-center">
-            <h1 className="text-4xl font-extrabold text-[#9AE9FD] text-center mb-8">
+          <div className="relative w-full sm:w-[480px] h-auto sm:h-[550px] bg-[#001318] rounded-[50px] p-6 sm:p-10 flex flex-col justify-center">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#9AE9FD] text-center mb-8">
               Edventure
             </h1>
 
-            <form className="flex flex-col w-full gap-y-5" onSubmit={handleTraditionalLogin}>
+            <form className="flex flex-col w-full gap-y-4 sm:gap-y-5" onSubmit={handleTraditionalLogin}>
               {/* Username Input */}
               <div>
-                <label className="text-white text-lg mb-2 block">Email</label>
+                <label className="text-white text-base sm:text-lg mb-2 block">Email</label>
                 <input 
                   type="text" 
                   placeholder="testuser@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-11 bg-[#C4C4C4] px-4 text-black text-lg border-none outline-none rounded-md"
+                  className="w-full h-10 sm:h-11 bg-[#C4C4C4] px-4 text-black text-base sm:text-lg border-none outline-none rounded-md"
                   required
                 />
               </div>
@@ -112,16 +112,16 @@ function Login() {
               {/* Password Input & Forgot Password Link */}
               <div>
                 <div className="relative">
-                    <label className="text-white text-lg mb-2 block">Password</label>
+                    <label className="text-white text-base sm:text-lg mb-2 block">Password</label>
                     <input 
                     type="password" 
                     placeholder="password123"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-11 bg-[#C4C4C4] pl-4 pr-10 text-black text-lg border-none outline-none rounded-md"
+                    className="w-full h-10 sm:h-11 bg-[#C4C4C4] pl-4 pr-10 text-black text-base sm:text-lg border-none outline-none rounded-md"
                     required
                     />
-                    <div className="absolute right-4 top-[44px] text-gray-600">
+                    <div className="absolute right-4 top-[38px] sm:top-[44px] text-gray-600">
                     <LockIcon />
                     </div>
                 </div>
@@ -134,7 +134,7 @@ function Login() {
               
               
               {/* "OR" Divider */}
-              <div className="flex items-center gap-x-4 text-[#9AE9FD] mt-4">
+              <div className="flex items-center gap-x-2 sm:gap-x-4 text-[#9AE9FD] mt-4">
                 <div className="h-[1px] w-full bg-[#9BE9FD]"></div>
                 <span>OR</span>
                 <div className="h-[1px] w-full bg-[#9BE9FD]"></div>
@@ -144,7 +144,7 @@ function Login() {
               <button 
                 type="button"
                 onClick={handleGoogleLogin} 
-                className="w-full h-11 bg-[#C4C4C4] rounded-md flex items-center justify-center gap-x-3 text-black font-medium text-base transition hover:bg-gray-400"
+                className="w-full h-10 sm:h-11 bg-[#C4C4C4] rounded-md flex items-center justify-center gap-x-3 text-black font-medium text-sm sm:text-base transition hover:bg-gray-400"
               >
                 <ColoredGoogleIcon />
                 Continue with Google
@@ -160,7 +160,7 @@ function Login() {
               {/* Main Login Button */}
               <button 
                 type="submit"
-                className="w-40 h-11 bg-[#9AE9FD] text-[#002732] font-black text-lg rounded-full self-center mt-6 transition hover:opacity-90"
+                className="w-full sm:w-40 h-10 sm:h-11 bg-[#9AE9FD] text-[#002732] font-black text-base sm:text-lg rounded-full self-center mt-6 transition hover:opacity-90"
               >
                 Login
               </button>
