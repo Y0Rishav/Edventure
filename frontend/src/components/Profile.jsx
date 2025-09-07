@@ -153,7 +153,7 @@ function Profile() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       <Sidebar onLogout={handleLogout}/>
       {/* Main content needs a left margin to not be hidden by the fixed sidebar */}
-      <div className="ml-64 py-12 px-4">
+      <div className="md:ml-64 py-12 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
             <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 px-8 py-12 text-center relative">

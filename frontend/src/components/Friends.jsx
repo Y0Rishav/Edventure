@@ -87,7 +87,7 @@ function Friends() {
       <Sidebar onLogout={handleLogout} />
 
       {/* Main Content */}
-      <main className="ml-64 p-8">
+      <main className="md:ml-64 p-8">
         {/* Header */}
         <div className="bg-[#B8C5C9] rounded-2xl p-6 mb-8 flex justify-between items-center">
           <div>

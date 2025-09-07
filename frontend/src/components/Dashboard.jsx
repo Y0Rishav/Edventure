@@ -125,7 +125,7 @@ function Dashboard() {
       {/* Use imported Sidebar component instead of inline sidebar */}
       <Sidebar onLogout={handleLogout} />
       {/* Main Content */}
-      <div className="ml-64 p-8">
+      <div className="md:ml-64 p-4 md:p-8">
         {/* Header */}
         <div className="bg-[#B8C5C9] rounded-2xl p-6 mb-8 flex justify-between items-center">
           <div>

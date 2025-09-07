@@ -1138,7 +1138,7 @@ function BattlegroundsLobby() {
       <div className="relative z-50">
         <Sidebar onLogout={handleLogout} />
       </div>
-      <div className="text-[#9AE9FD] text-xl ml-64">Loading...</div>
+      <div className="text-[#9AE9FD] text-xl md:ml-64">Loading...</div>
     </div>
   );
 
@@ -1160,7 +1160,7 @@ function BattlegroundsLobby() {
         <div className="absolute bottom-[40%] left-[40%] w-20 h-20 bg-[#144F5F]/30 rounded-full blur-xl"></div>
       </div>
 
-      <div className="relative z-20 ml-64 p-6">
+      <div className="relative z-20 md:ml-64 p-6">
         {/* Header */}
         <div className="max-w-5xl mx-auto mb-12">
           <div className="bg-[#001318] border border-[#9AE9FD]/30 rounded-3xl p-8 text-center relative overflow-hidden">

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 
 // Icon Components
@@ -84,60 +85,94 @@ const PdfIcon = () => (
 );
 
 function Sidebar({onLogout}) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+  
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
     
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-[#7FB3C1] p-6 z-50">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#002732] mb-2">Edventure</h1>
+    <>
+      {/* Mobile Hamburger Button */}
+      <button
+        onClick={toggleMobileMenu}
+        className="fixed top-4 left-4 z-50 md:hidden bg-[#7FB3C1] p-2 rounded-lg shadow-lg"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12H21" stroke="#002732" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M3 6H21" stroke="#002732" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M3 18H21" stroke="#002732" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      </button>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={closeMobileMenu}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`fixed left-0 top-0 h-full w-64 bg-[#7FB3C1] p-6 z-50 transform transition-transform duration-300 ease-in-out ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      } md:translate-x-0`}>
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-[#002732] mb-2">Edventure</h1>
+        </div>
+        
+        {/* Navigation Menu */}
+        <nav className="space-y-1">
+          <div className="text-[#002732] font-semibold mb-4 text-sm">Dashboard</div>
+          <Link to="/dashboard" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <HomeIcon />
+            <span>Dashboard</span>
+          </Link>
+          <Link to="/friends" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <UsersIcon />
+            <span>Your Squad</span>
+          </Link>
+          <Link to="/battlegrounds/lobby" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <SwordIcon />
+            <span>Battle Arena</span>
+          </Link>
+          <Link to="/rewards" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <TrophyIcon />
+            <span>Rewards</span>
+          </Link>
+          <Link to="/leaderboard" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <LeaderboardIcon />
+            <span>Leaderboard</span>
+          </Link>
+          <Link to="/pdf-quiz" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <PdfIcon />
+            <span>PDF to Quiz</span>
+          </Link>
+          
+          <div className="border-t border-[#6BA3B1] my-6"></div>
+          
+          <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <HomeIcon />
+            <span>Home</span>
+          </Link>
+          <Link to="/help" onClick={closeMobileMenu} className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
+            <HelpIcon />
+            <span>Help</span>
+          </Link>
+          <button 
+            onClick={() => { onLogout(); closeMobileMenu(); }}
+            className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors w-full text-left"
+          >
+            <LogoutIcon />
+            <span>Logout</span>
+          </button>
+        </nav>
       </div>
-      
-      {/* Navigation Menu */}
-      <nav className="space-y-1">
-        <div className="text-[#002732] font-semibold mb-4 text-sm">Dashboard</div>
-        <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <HomeIcon />
-          <span>Dashboard</span>
-        </Link>
-        <Link to="/friends" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <UsersIcon />
-          <span>Your Squad</span>
-        </Link>
-        <Link to="/battlegrounds/lobby" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <SwordIcon />
-          <span>Battle Arena</span>
-        </Link>
-        <Link to="/rewards" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <TrophyIcon />
-          <span>Rewards</span>
-        </Link>
-        <Link to="/leaderboard" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <LeaderboardIcon />
-          <span>Leaderboard</span>
-        </Link>
-        <Link to="/pdf-quiz" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <PdfIcon />
-          <span>PDF to Quiz</span>
-        </Link>
-        
-        <div className="border-t border-[#6BA3B1] my-6"></div>
-        
-        <Link to="/" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <HomeIcon />
-          <span>Home</span>
-        </Link>
-        <Link to="/help" className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors">
-          <HelpIcon />
-          <span>Help</span>
-        </Link>
-        <button 
-          onClick={onLogout}
-          className="flex items-center gap-3 px-4 py-3 text-[#002732] hover:bg-[#6BA3B1] rounded-lg transition-colors w-full text-left"
-        >
-          <LogoutIcon />
-          <span>Logout</span>
-        </button>
-      </nav>
-    </div>
+    </>
   );
 }
 

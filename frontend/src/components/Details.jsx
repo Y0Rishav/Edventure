@@ -21,7 +21,7 @@ const Details = () => {
   return (
     <div className="flex min-h-screen">
       <SideBar onLogout={handleLogout}/>
-  <main className="flex-1 min-h-screen w-full ml-64 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 " style={{ background: 'linear-gradient(180deg, #051418 0%, #103E4C 100%)' }}>
+  <main className="flex-1 min-h-screen w-full md:ml-64 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 " style={{ background: 'linear-gradient(180deg, #051418 0%, #103E4C 100%)' }}>
         
         {/* The Scroll Container */}
         <div className={`scroll-container ${isScrolled ? 'unrolled' : ''}`}>

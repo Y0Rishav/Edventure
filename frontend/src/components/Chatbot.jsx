@@ -131,7 +131,7 @@ return (
         <div className="fixed bottom-4 right-4 z-50">
             <button
                 onClick={toggleChat}
-                className="bg-[#98B7BF] hover:bg-[#9BE9FD] text-black rounded-full p-4 shadow-lg transform transition-transform hover:scale-110"
+                className="bg-[#98B7BF] hover:bg-[#9BE9FD] text-black rounded-full p-3 sm:p-4 shadow-lg transform transition-transform hover:scale-110 text-sm sm:text-base"
             >
                 💬 Need help? Ask Era!
             </button>
@@ -139,19 +139,19 @@ return (
 
         {/* Chat Window */}
         {isOpen && (
-            <div className="fixed bottom-16 right-4 w-96 h-[28rem] bg-[linear-gradient(180deg,rgba(0,0,0,1)_0%,rgba(20,78,94,1)_100%)] border border-gray-700 rounded-lg shadow-2xl z-50 flex flex-col animate-fade-in">
+            <div className="fixed bottom-16 right-4 left-4 sm:left-auto w-auto sm:w-96 h-[70vh] sm:h-[28rem] bg-[linear-gradient(180deg,rgba(0,0,0,1)_0%,rgba(20,78,94,1)_100%)] border border-gray-700 rounded-lg shadow-2xl z-50 flex flex-col animate-fade-in">
                 <div className="bg-[#002732] text-[#9BE9FD] p-3 rounded-t-lg">
-                    <h3 className="text-lg font-semibold">ERA - Your AI Tutor 🤖</h3>
+                    <h3 className="text-base sm:text-lg font-semibold">ERA - Your AI Tutor 🤖</h3>
                 </div>
-                <div className="flex-1 p-3 overflow-hidden bg-[#001318]/90 relative">
+                <div className="flex-1 p-2 sm:p-3 overflow-hidden bg-[#001318]/90 relative">
                     <div
                         className="h-full overflow-y-auto scrollbar-hide"
                         ref={messagesEndRef}
                         style={{ scrollBehavior: 'smooth' }}
                     >
                         {messages.map((msg, index) => (
-                            <div key={index} className={`mb-3 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
-                                <div className={`inline-block p-3 rounded-lg max-w-xs break-words ${
+                            <div key={index} className={`mb-2 sm:mb-3 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+                                <div className={`inline-block p-2 sm:p-3 rounded-lg max-w-xs sm:max-w-sm break-words text-sm sm:text-base ${
                                     msg.role === 'user' 
                                         ? 'bg-[#144F5F] text-white' 
                                         : 'bg-white/10 text-[#9BE9FD] border border-[#9BE9FD]/30'
@@ -161,8 +161,8 @@ return (
                             </div>
                         ))}
                         {isTyping && (
-                            <div className="text-left mb-3">
-                                <div className="inline-block p-3 rounded-lg bg-white/10 text-[#9BE9FD] border border-[#9BE9FD]/30">
+                            <div className="text-left mb-2 sm:mb-3">
+                                <div className="inline-block p-2 sm:p-3 rounded-lg bg-white/10 text-[#9BE9FD] border border-[#9BE9FD]/30">
                                     <div className="flex space-x-1">
                                         <div className="w-2 h-2 bg-[#9BE9FD] rounded-full animate-bounce"></div>
                                         <div className="w-2 h-2 bg-[#9BE9FD] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -182,12 +182,12 @@ return (
                                 });
                             }
                         }}
-                        className="absolute bottom-4 right-4 bg-[#98B7BF]  text-white rounded-full p-2 shadow-lg transition-colors"
+                        className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 bg-[#98B7BF] text-white rounded-full p-1 sm:p-2 shadow-lg transition-colors text-sm sm:text-base"
                     >
                         ↓
                     </button>
                 </div>
-                <div className="p-3 border-t border-gray-700 bg-[#001318]">
+                <div className="p-2 sm:p-3 border-t border-gray-700 bg-[#001318]">
                     <div className="flex">
                         <input
                             type="text"
@@ -197,13 +197,13 @@ return (
                             placeholder={
                                 step === 0 ? "Enter your name..." : "Ask your question..."
                             }
-                            className="flex-1 border border-gray-600 rounded-l-lg px-3 py-2 bg-[#002732] text-[#9BE9FD] placeholder-[#9BE9FD]/60 focus:outline-none focus:ring-2 focus:ring-[#9BE9FD] focus:border-transparent"
+                            className="flex-1 border border-gray-600 rounded-l-lg px-3 py-2 bg-[#002732] text-[#9BE9FD] placeholder-[#9BE9FD]/60 focus:outline-none focus:ring-2 focus:ring-[#9BE9FD] focus:border-transparent text-sm sm:text-base"
                             disabled={isTyping}
                         />
                         <button
                             onClick={handleSend}
                             disabled={isTyping}
-                            className="bg-[#144F5F] hover:bg-[#9BE9FD] hover:text-black text-white px-4 py-2 rounded-r-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="bg-[#144F5F] hover:bg-[#9BE9FD] hover:text-black text-white px-3 sm:px-4 py-2 rounded-r-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                         >
                             {isTyping ? '...' : 'Send'}
                         </button>

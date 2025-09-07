@@ -93,7 +93,7 @@ function Leaderboard() {
       </div>
 
       <Sidebar onLogout={handleLogout} />
-      <main className="ml-64 max-w-7xl mx-auto relative z-10">
+      <main className="md:ml-64 max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="bg-[#1E3A47]/80 backdrop-blur-md p-8 rounded-3xl shadow-2xl mb-8 flex justify-between items-center border border-[#9AE9FD]/30">
           <div className="flex items-center">

@@ -187,7 +187,7 @@ function Rewards() {
   return (
     <div className="min-h-screen bg-[#0A1F2B] text-white" style={{ fontFamily: "Inter, sans-serif" }}>
       <SideBar onLogout={handleLogout} />
-      <div className="ml-64 p-8">
+      <div className="md:ml-64 p-8">
         {/* Header */}
         <div className="bg-[#7FB3C1] rounded-2xl p-6 mb-8">
           <h1 className="text-3xl font-bold text-[#002732] mb-4 text-center">Rewards & Courses</h1>
